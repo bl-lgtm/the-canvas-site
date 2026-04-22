@@ -7,6 +7,7 @@
 <meta name="description" content="The Canvas — 몰입형 미디어아트, 공간 경험, 브랜딩을 기획부터 실행까지. Seize the brush." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="image" href="images/dream-hero.webp" type="image/webp" fetchpriority="high">
 <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@900&family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
@@ -54,16 +55,10 @@
   .reveal-clip { overflow: hidden; display: inline-block; vertical-align: top; }
 
   /* Marquee */
-  @keyframes marquee {
-    0%   { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-  }
+  @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
   .marquee-track { display: inline-flex; animation: marquee 40s linear infinite; white-space: nowrap; }
   .marquee-track:hover { animation-play-state: paused; }
-  @keyframes marquee-slow {
-    0%   { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-  }
+  @keyframes marquee-slow { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
   .marquee-slow { animation: marquee-slow 80s linear infinite; }
 
   /* Noise overlay */
@@ -74,18 +69,51 @@
     opacity: .35; pointer-events: none; z-index: 60; mix-blend-mode: overlay;
   }
 
-  /* Placeholder tile */
-  .tile-ph {
-    background:
-      radial-gradient(80% 60% at 30% 20%, rgba(106,91,255,.18), transparent 60%),
-      radial-gradient(60% 50% at 80% 85%, rgba(200,255,58,.08), transparent 60%),
-      linear-gradient(135deg, #131212, #1b1a1a);
+  /* Per-project tile themes — brand-aligned gradients */
+  .t-lg-webos   { background: radial-gradient(80% 60% at 30% 20%, rgba(120,200,255,.35), transparent 60%), radial-gradient(50% 50% at 80% 85%, rgba(200,255,58,.15), transparent 60%), linear-gradient(135deg,#0b2340,#0a0a0a); }
+  .t-lg-ai      { background: radial-gradient(70% 60% at 20% 20%, rgba(177,120,255,.4), transparent 60%), radial-gradient(60% 60% at 80% 80%, rgba(255,100,180,.25), transparent 60%), linear-gradient(135deg,#1a0b2a,#0a0a0a); }
+  .t-lg-alpha   { background: radial-gradient(90% 70% at 50% 0%, rgba(255,180,80,.25), transparent 60%), linear-gradient(135deg,#1a1a1a,#0a0a0a); }
+  .t-lg-robot   { background: radial-gradient(70% 60% at 30% 30%, rgba(106,91,255,.4), transparent 60%), radial-gradient(50% 50% at 80% 80%, rgba(200,255,58,.22), transparent 60%), linear-gradient(135deg,#0f0f1f,#0a0a0a); }
+  .t-lg-premiere{ background: radial-gradient(80% 60% at 30% 20%, rgba(255,70,90,.38), transparent 60%), radial-gradient(60% 60% at 80% 80%, rgba(140,50,220,.3), transparent 60%), linear-gradient(135deg,#220a18,#0a0a0a); }
+  .t-ibk        { background: radial-gradient(70% 60% at 30% 30%, rgba(60,120,255,.35), transparent 60%), radial-gradient(50% 60% at 80% 80%, rgba(255,200,120,.22), transparent 60%), linear-gradient(135deg,#07152b,#0a0a0a); }
+  .t-mars       { background: radial-gradient(80% 70% at 20% 20%, rgba(255,140,80,.35), transparent 60%), radial-gradient(60% 60% at 80% 80%, rgba(60,200,220,.3), transparent 60%), linear-gradient(135deg,#20110a,#0a0a0a); }
+  .t-sk         { background: radial-gradient(70% 60% at 50% 50%, rgba(80,220,200,.35), transparent 60%), radial-gradient(60% 60% at 80% 80%, rgba(50,140,220,.25), transparent 60%), linear-gradient(135deg,#062022,#0a0a0a); }
+  .t-samsung    { background: radial-gradient(70% 60% at 30% 20%, rgba(160,200,240,.28), transparent 60%), linear-gradient(135deg,#0f1720,#0a0a0a); }
+  .t-cartier    { background: radial-gradient(70% 60% at 30% 30%, rgba(220,40,50,.4), transparent 60%), radial-gradient(60% 60% at 80% 80%, rgba(255,180,120,.18), transparent 60%), linear-gradient(135deg,#2a070a,#0a0a0a); }
+  .t-vacheron   { background: radial-gradient(80% 60% at 30% 20%, rgba(240,200,110,.3), transparent 60%), radial-gradient(50% 60% at 80% 80%, rgba(0,80,60,.35), transparent 60%), linear-gradient(135deg,#0f1a12,#0a0a0a); }
+  .t-ddp        { background: radial-gradient(70% 60% at 30% 30%, rgba(255,130,170,.4), transparent 60%), radial-gradient(60% 60% at 80% 80%, rgba(255,180,80,.25), transparent 60%), linear-gradient(135deg,#2a0a1b,#0a0a0a); }
+  .t-veuve      { background: radial-gradient(80% 70% at 30% 30%, rgba(255,220,60,.42), transparent 60%), linear-gradient(135deg,#1b1605,#0a0a0a); }
+  .t-canada     { background: radial-gradient(70% 60% at 30% 30%, rgba(180,40,50,.35), transparent 60%), radial-gradient(60% 60% at 80% 80%, rgba(200,200,200,.12), transparent 60%), linear-gradient(135deg,#1a0c0e,#0a0a0a); }
+  .t-nespresso  { background: radial-gradient(70% 60% at 30% 30%, rgba(255,140,60,.4), transparent 60%), radial-gradient(60% 60% at 80% 80%, rgba(180,240,120,.22), transparent 60%), linear-gradient(135deg,#1f0d05,#0a0a0a); }
+  .t-genesis    { background: radial-gradient(70% 60% at 30% 30%, rgba(200,170,100,.3), transparent 60%), radial-gradient(60% 60% at 80% 80%, rgba(40,80,70,.3), transparent 60%), linear-gradient(135deg,#10130f,#0a0a0a); }
+  .t-woori      { background: radial-gradient(70% 60% at 30% 30%, rgba(90,150,255,.35), transparent 60%), radial-gradient(60% 60% at 80% 80%, rgba(255,255,255,.12), transparent 60%), linear-gradient(135deg,#0a1530,#0a0a0a); }
+  .t-awe        { background: radial-gradient(80% 60% at 30% 20%, rgba(200,220,255,.22), transparent 60%), radial-gradient(50% 60% at 80% 80%, rgba(106,91,255,.25), transparent 60%), linear-gradient(135deg,#0f1220,#0a0a0a); }
+  .t-starfield  { background: radial-gradient(80% 70% at 30% 20%, rgba(220,200,160,.3), transparent 60%), radial-gradient(50% 60% at 80% 80%, rgba(140,100,60,.2), transparent 60%), linear-gradient(135deg,#1a150f,#0a0a0a); }
+  .t-default    { background: radial-gradient(80% 60% at 30% 20%, rgba(106,91,255,.2), transparent 60%), radial-gradient(60% 50% at 80% 85%, rgba(200,255,58,.1), transparent 60%), linear-gradient(135deg,#131212,#1b1a1a); }
+
+  /* Generic service tile themes */
+  .t-creative { background: radial-gradient(80% 60% at 30% 20%, rgba(200,255,58,.18), transparent 60%), radial-gradient(50% 60% at 80% 85%, rgba(255,255,255,.06), transparent 60%), linear-gradient(135deg,#0f0f0f,#1a1a1a); }
+  .t-contents { background: radial-gradient(80% 60% at 30% 20%, rgba(106,91,255,.28), transparent 60%), radial-gradient(50% 60% at 80% 85%, rgba(60,200,220,.18), transparent 60%), linear-gradient(135deg,#0b0f25,#0a0a0a); }
+  .t-space    { background: radial-gradient(80% 60% at 30% 20%, rgba(255,130,170,.28), transparent 60%), radial-gradient(60% 60% at 80% 80%, rgba(255,180,80,.2), transparent 60%), linear-gradient(135deg,#1a0a18,#0a0a0a); }
+  .t-brand    { background: radial-gradient(80% 60% at 30% 20%, rgba(240,200,110,.24), transparent 60%), radial-gradient(50% 60% at 80% 80%, rgba(0,80,60,.28), transparent 60%), linear-gradient(135deg,#0f1a12,#0a0a0a); }
+
+  /* Animated dot grid overlay for tiles */
+  .dot-grid::after {
+    content:"";
+    position:absolute; inset:0;
+    background-image: radial-gradient(rgba(244,241,234,.08) 1px, transparent 1px);
+    background-size: 22px 22px;
+    mask-image: linear-gradient(180deg, transparent, #000 30%, #000 70%, transparent);
+    -webkit-mask-image: linear-gradient(180deg, transparent, #000 30%, #000 70%, transparent);
+    pointer-events:none;
   }
 
   .card-hover { transition: transform .6s cubic-bezier(.2,.7,.2,1); }
   .card-hover:hover { transform: translateY(-6px); }
-  .img-zoom { transition: transform 1.2s cubic-bezier(.2,.7,.2,1); }
-  .group:hover .img-zoom { transform: scale(1.06); }
+  .tile-zoom { transition: transform 1.2s cubic-bezier(.2,.7,.2,1); }
+  .group:hover .tile-zoom { transform: scale(1.06); }
+  .group:hover .tile-meta { transform: translateY(-2px); }
+  .tile-meta { transition: transform .6s cubic-bezier(.2,.7,.2,1); }
 
   /* Horizontal scroll services */
   .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -95,7 +123,7 @@
   @keyframes blink { 0%,49% {opacity:1;} 50%,100% {opacity:0;} }
   .blink { animation: blink 1.1s steps(1) infinite; }
 
-  /* Mark / highlight */
+  /* Highlight */
   .hl { background-image: linear-gradient(transparent 65%, rgba(200,255,58,.55) 65%); padding: 0 .1em; }
 
   /* Section divider */
@@ -111,6 +139,17 @@
 
   /* Tag pill */
   .pill { border: 1px solid rgba(244,241,234,.2); border-radius: 999px; padding: 6px 14px; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; }
+
+  /* Big faded type inside tile */
+  .tile-bigtype {
+    position: absolute; bottom: -8%; right: -4%;
+    font-family: 'Anton','Archivo',sans-serif;
+    font-size: clamp(4rem, 12vw, 14rem);
+    line-height: .8;
+    color: rgba(244,241,234,.07);
+    pointer-events: none;
+    letter-spacing: -0.04em;
+  }
 </style>
 </head>
 <body class="noise">
@@ -134,14 +173,17 @@
 
 <!-- ============ HERO ============ -->
 <section id="top" class="relative min-h-[100svh] flex flex-col justify-end overflow-hidden">
-  <!-- Background image -->
   <div class="absolute inset-0">
-    <img src="images/dream-hero-2x.jpg" alt="Dream Memory by The Canvas" class="w-full h-full object-cover opacity-60" style="object-position: center 30%;" />
+    <picture>
+      <source media="(max-width: 768px)" srcset="images/dream-hero-mobile.webp" type="image/webp">
+      <source media="(max-width: 768px)" srcset="images/dream-hero-mobile.jpg" type="image/jpeg">
+      <source srcset="images/dream-hero.webp" type="image/webp">
+      <img src="images/dream-hero.jpg" alt="Dream Memory · The Canvas" class="w-full h-full object-cover opacity-60" style="object-position: center 30%;" loading="eager" fetchpriority="high" />
+    </picture>
     <div class="absolute inset-0 hero-fade"></div>
     <div class="absolute inset-0 bg-gradient-to-r from-ink/60 via-transparent to-ink/30"></div>
   </div>
 
-  <!-- Meta top -->
   <div class="absolute top-24 md:top-28 left-6 md:left-10 right-6 md:right-10 flex items-start justify-between gap-6 z-10 text-paper">
     <div class="text-[11px] tracking-[.2em] uppercase opacity-80">
       <div>Seoul · KR</div>
@@ -153,7 +195,6 @@
     </div>
   </div>
 
-  <!-- Headline -->
   <div class="relative z-10 px-6 md:px-10 pb-16 md:pb-20">
     <div class="font-display display-huge text-paper">
       <span class="reveal-clip"><span class="reveal-word">SEIZE</span></span>
@@ -167,9 +208,7 @@
         더 캔버스는 미디어아트·공간경험·브랜딩을 하나의 감각으로 엮어, 브랜드의 장면을 현실에 그립니다.
       </p>
       <a href="#work" class="reveal-up group inline-flex items-center gap-3 text-xs uppercase tracking-[.24em] text-paper self-start md:self-auto">
-        <span class="w-10 h-10 rounded-full border border-paper/50 flex items-center justify-center group-hover:bg-paper group-hover:text-ink transition-all">
-          ↓
-        </span>
+        <span class="w-10 h-10 rounded-full border border-paper/50 flex items-center justify-center group-hover:bg-paper group-hover:text-ink transition-all">↓</span>
         Scroll to Work
       </a>
     </div>
@@ -227,7 +266,6 @@
         </p>
       </div>
 
-      <!-- Stat row -->
       <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10 border-t border-paper/15 pt-10">
         <div class="reveal">
           <div class="font-display text-5xl md:text-6xl text-paper">End<span class="text-signal">—</span>End</div>
@@ -266,63 +304,62 @@
     </div>
   </div>
 
-  <!-- Horizontal scroll cards -->
   <div class="no-scrollbar overflow-x-auto -mx-6 md:-mx-10 px-6 md:px-10 snap-x snap-mandatory">
     <div class="flex gap-5 md:gap-8 pb-4">
-      <!-- Card 1 -->
       <article class="reveal snap-start shrink-0 w-[84vw] md:w-[32vw] min-h-[64vh] relative overflow-hidden rounded-sm card-hover group">
-        <div class="absolute inset-0 tile-ph img-zoom"></div>
+        <div class="absolute inset-0 t-creative tile-zoom dot-grid"></div>
         <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent"></div>
+        <div class="tile-bigtype">01</div>
         <div class="absolute top-6 left-6 right-6 flex justify-between items-start text-paper">
           <div class="font-mono text-xs tracking-widest">01 / 04</div>
           <div class="font-mono text-xs tracking-widest opacity-60">↗</div>
         </div>
-        <div class="absolute bottom-6 left-6 right-6 text-paper">
+        <div class="absolute bottom-6 left-6 right-6 text-paper tile-meta">
           <div class="text-xs uppercase tracking-[.2em] text-signal mb-3">Creative &amp; Strategy</div>
           <h3 class="font-display text-4xl md:text-5xl leading-none">브랜드의<br />시나리오.</h3>
           <p class="mt-4 text-sm text-paper/70 leading-relaxed">전략·기획·아트 디렉션으로 브랜드 장면의 서사를 설계합니다.</p>
         </div>
       </article>
 
-      <!-- Card 2 -->
       <article class="reveal snap-start shrink-0 w-[84vw] md:w-[32vw] min-h-[64vh] relative overflow-hidden rounded-sm card-hover group" style="transition-delay:.1s">
-        <img src="images/dream-hero.jpg" alt="" class="absolute inset-0 w-full h-full object-cover img-zoom" style="object-position: 20% center;" />
+        <div class="absolute inset-0 t-contents tile-zoom dot-grid"></div>
         <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent"></div>
+        <div class="tile-bigtype">02</div>
         <div class="absolute top-6 left-6 right-6 flex justify-between items-start text-paper">
           <div class="font-mono text-xs tracking-widest">02 / 04</div>
           <div class="font-mono text-xs tracking-widest opacity-60">↗</div>
         </div>
-        <div class="absolute bottom-6 left-6 right-6 text-paper">
+        <div class="absolute bottom-6 left-6 right-6 text-paper tile-meta">
           <div class="text-xs uppercase tracking-[.2em] text-signal mb-3">Contents Marketing</div>
           <h3 class="font-display text-4xl md:text-5xl leading-none">빛으로<br />쓰는 문장.</h3>
           <p class="mt-4 text-sm text-paper/70 leading-relaxed">LED · 3D 모션 · 아나모픽 · AI 영상까지, 모든 화면을 하나의 서사로.</p>
         </div>
       </article>
 
-      <!-- Card 3 -->
       <article class="reveal snap-start shrink-0 w-[84vw] md:w-[32vw] min-h-[64vh] relative overflow-hidden rounded-sm card-hover group" style="transition-delay:.2s">
-        <img src="images/dream-2.jpg" alt="" class="absolute inset-0 w-full h-full object-cover img-zoom" />
+        <div class="absolute inset-0 t-space tile-zoom dot-grid"></div>
         <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent"></div>
+        <div class="tile-bigtype">03</div>
         <div class="absolute top-6 left-6 right-6 flex justify-between items-start text-paper">
           <div class="font-mono text-xs tracking-widest">03 / 04</div>
           <div class="font-mono text-xs tracking-widest opacity-60">↗</div>
         </div>
-        <div class="absolute bottom-6 left-6 right-6 text-paper">
+        <div class="absolute bottom-6 left-6 right-6 text-paper tile-meta">
           <div class="text-xs uppercase tracking-[.2em] text-signal mb-3">Space Experience</div>
           <h3 class="font-display text-4xl md:text-5xl leading-none">걷는<br />전시.</h3>
           <p class="mt-4 text-sm text-paper/70 leading-relaxed">전시·팝업 공간을 동선과 감각으로 설계해 체험으로 완성합니다.</p>
         </div>
       </article>
 
-      <!-- Card 4 -->
       <article class="reveal snap-start shrink-0 w-[84vw] md:w-[32vw] min-h-[64vh] relative overflow-hidden rounded-sm card-hover group" style="transition-delay:.3s">
-        <img src="images/dream-3.jpg" alt="" class="absolute inset-0 w-full h-full object-cover img-zoom" />
+        <div class="absolute inset-0 t-brand tile-zoom dot-grid"></div>
         <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent"></div>
+        <div class="tile-bigtype">04</div>
         <div class="absolute top-6 left-6 right-6 flex justify-between items-start text-paper">
           <div class="font-mono text-xs tracking-widest">04 / 04</div>
           <div class="font-mono text-xs tracking-widest opacity-60">↗</div>
         </div>
-        <div class="absolute bottom-6 left-6 right-6 text-paper">
+        <div class="absolute bottom-6 left-6 right-6 text-paper tile-meta">
           <div class="text-xs uppercase tracking-[.2em] text-signal mb-3">Branding</div>
           <h3 class="font-display text-4xl md:text-5xl leading-none">공간에<br />아이덴티티를.</h3>
           <p class="mt-4 text-sm text-paper/70 leading-relaxed">럭셔리 팝업부터 리테일 리노베이션까지, 공간이 곧 브랜드가 되도록.</p>
@@ -355,196 +392,244 @@
 
   <!-- Portfolio grid -->
   <div class="grid grid-cols-12 gap-3 md:gap-5">
-    <!-- 01 -->
+
+    <!-- 01 LG CES WebOS -->
     <a href="#" class="reveal group col-span-12 md:col-span-8 aspect-[16/10] relative overflow-hidden rounded-sm block">
-      <div class="absolute inset-0 tile-ph img-zoom"></div>
+      <div class="absolute inset-0 t-lg-webos tile-zoom dot-grid"></div>
       <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
+      <div class="tile-bigtype">WEBOS</div>
       <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">01 · 2026 · LG CES</div>
-      <div class="absolute bottom-5 left-5 right-5 text-paper">
+      <div class="absolute bottom-5 left-5 right-5 text-paper tile-meta">
         <div class="font-display text-3xl md:text-5xl leading-none">MS ZONE — WebOS Goldberg</div>
         <div class="mt-2 text-sm text-paper/70">Interactive Goldberg + Real-time Media</div>
       </div>
     </a>
-    <!-- 02 -->
+
+    <!-- 02 꿈의 기억 (유일하게 실제 이미지) -->
     <a href="#" class="reveal group col-span-12 md:col-span-4 aspect-[4/5] relative overflow-hidden rounded-sm block">
-      <img src="images/dream-hero.jpg" alt="" class="absolute inset-0 w-full h-full object-cover img-zoom" />
+      <picture>
+        <source srcset="images/dream-thumb.webp" type="image/webp">
+        <img src="images/dream-thumb.jpg" alt="꿈의 기억" class="absolute inset-0 w-full h-full object-cover tile-zoom" loading="lazy" />
+      </picture>
       <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
       <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">02 · 2023 · Coex Living Fair</div>
-      <div class="absolute bottom-5 left-5 right-5 text-paper">
+      <div class="absolute bottom-5 left-5 right-5 text-paper tile-meta">
         <div class="font-display text-3xl md:text-4xl leading-none">꿈의 기억</div>
         <div class="mt-2 text-sm text-paper/70">LED · Lighting · Media Facade</div>
       </div>
     </a>
 
-    <!-- 03 -->
+    <!-- 03 LG CES AI Gallery -->
     <a href="#" class="reveal group col-span-6 md:col-span-4 aspect-square relative overflow-hidden rounded-sm block">
-      <div class="absolute inset-0 tile-ph img-zoom"></div>
+      <div class="absolute inset-0 t-lg-ai tile-zoom dot-grid"></div>
       <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
+      <div class="tile-bigtype">AI</div>
       <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">03 · 2026 · LG CES</div>
-      <div class="absolute bottom-5 left-5 right-5 text-paper">
+      <div class="absolute bottom-5 left-5 right-5 text-paper tile-meta">
         <div class="font-display text-2xl md:text-3xl leading-none">MS ZONE — AI GALLERY</div>
-      </div>
-    </a>
-    <!-- 04 -->
-    <a href="#" class="reveal group col-span-6 md:col-span-4 aspect-square relative overflow-hidden rounded-sm block">
-      <img src="images/dream-2.jpg" alt="" class="absolute inset-0 w-full h-full object-cover img-zoom" />
-      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
-      <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">04 · 2026 · LG U+ MWC</div>
-      <div class="absolute bottom-5 left-5 right-5 text-paper">
-        <div class="font-display text-2xl md:text-3xl leading-none">Robot Presentation</div>
-      </div>
-    </a>
-    <!-- 05 -->
-    <a href="#" class="reveal group col-span-12 md:col-span-4 aspect-square relative overflow-hidden rounded-sm block">
-      <div class="absolute inset-0 tile-ph img-zoom"></div>
-      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
-      <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">05 · 2026 · LG CES</div>
-      <div class="absolute bottom-5 left-5 right-5 text-paper">
-        <div class="font-display text-2xl md:text-3xl leading-none">World Premiere</div>
+        <div class="mt-2 text-sm text-paper/70">Projection Mapping · 3 Themes</div>
       </div>
     </a>
 
-    <!-- 06 (wide) -->
-    <a href="#" class="reveal group col-span-12 md:col-span-6 aspect-[16/9] relative overflow-hidden rounded-sm block">
-      <div class="absolute inset-0 tile-ph img-zoom"></div>
+    <!-- 04 LG U+ Robot -->
+    <a href="#" class="reveal group col-span-6 md:col-span-4 aspect-square relative overflow-hidden rounded-sm block">
+      <div class="absolute inset-0 t-lg-robot tile-zoom dot-grid"></div>
       <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
-      <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">06 · 2025 · IBK</div>
-      <div class="absolute bottom-5 left-5 right-5 text-paper">
-        <div class="font-display text-3xl md:text-4xl leading-none">IBK 본점 홍보관</div>
-        <div class="mt-2 text-sm text-paper/70">Infinity Mirror · Anamorphic</div>
+      <div class="tile-bigtype">ROBOT</div>
+      <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">04 · 2026 · LG U+ MWC</div>
+      <div class="absolute bottom-5 left-5 right-5 text-paper tile-meta">
+        <div class="font-display text-2xl md:text-3xl leading-none">Robot Presentation</div>
+        <div class="mt-2 text-sm text-paper/70">8 Isometric Episodes · Live Robot Sync</div>
       </div>
     </a>
-    <!-- 07 -->
-    <a href="#" class="reveal group col-span-12 md:col-span-6 aspect-[16/9] relative overflow-hidden rounded-sm block">
-      <img src="images/dream-3.jpg" alt="" class="absolute inset-0 w-full h-full object-cover img-zoom" />
+
+    <!-- 05 LG CES World Premiere -->
+    <a href="#" class="reveal group col-span-12 md:col-span-4 aspect-square relative overflow-hidden rounded-sm block">
+      <div class="absolute inset-0 t-lg-premiere tile-zoom dot-grid"></div>
       <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
+      <div class="tile-bigtype">FURON</div>
+      <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">05 · 2026 · LG CES</div>
+      <div class="absolute bottom-5 left-5 right-5 text-paper tile-meta">
+        <div class="font-display text-2xl md:text-3xl leading-none">World Premiere</div>
+        <div class="mt-2 text-sm text-paper/70">Split LED + T-OLED Presentation</div>
+      </div>
+    </a>
+
+    <!-- 06 IBK -->
+    <a href="#" class="reveal group col-span-12 md:col-span-6 aspect-[16/9] relative overflow-hidden rounded-sm block">
+      <div class="absolute inset-0 t-ibk tile-zoom dot-grid"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
+      <div class="tile-bigtype">IBK</div>
+      <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">06 · 2025 · IBK</div>
+      <div class="absolute bottom-5 left-5 right-5 text-paper tile-meta">
+        <div class="font-display text-3xl md:text-4xl leading-none">IBK 본점 홍보관</div>
+        <div class="mt-2 text-sm text-paper/70">Infinity Mirror · Anamorphic Mapping</div>
+      </div>
+    </a>
+
+    <!-- 07 MARS 2025 -->
+    <a href="#" class="reveal group col-span-12 md:col-span-6 aspect-[16/9] relative overflow-hidden rounded-sm block">
+      <div class="absolute inset-0 t-mars tile-zoom dot-grid"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
+      <div class="tile-bigtype">MARS</div>
       <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">07 · 2025 · 신세계</div>
-      <div class="absolute bottom-5 left-5 right-5 text-paper">
+      <div class="absolute bottom-5 left-5 right-5 text-paper tile-meta">
         <div class="font-display text-3xl md:text-4xl leading-none">MARS 2025 · 360°</div>
         <div class="mt-2 text-sm text-paper/70">신세계 프라퍼티 · 스타베이 시티</div>
       </div>
     </a>
 
-    <!-- 08 -->
+    <!-- 08 SK Sphere -->
     <a href="#" class="reveal group col-span-6 md:col-span-3 aspect-[3/4] relative overflow-hidden rounded-sm block">
-      <div class="absolute inset-0 tile-ph img-zoom"></div>
+      <div class="absolute inset-0 t-sk tile-zoom dot-grid"></div>
       <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
+      <div class="tile-bigtype">6M</div>
       <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">08 · SK CES</div>
-      <div class="absolute bottom-5 left-5 right-5 text-paper">
+      <div class="absolute bottom-5 left-5 right-5 text-paper tile-meta">
         <div class="font-display text-2xl leading-none">Sphere 6m</div>
-      </div>
-    </a>
-    <!-- 09 -->
-    <a href="#" class="reveal group col-span-6 md:col-span-3 aspect-[3/4] relative overflow-hidden rounded-sm block">
-      <img src="images/dream-4.jpg" alt="" class="absolute inset-0 w-full h-full object-cover img-zoom" />
-      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
-      <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">09 · 삼성반도체</div>
-      <div class="absolute bottom-5 left-5 right-5 text-paper">
-        <div class="font-display text-2xl leading-none">평택 VIP 전시관</div>
-      </div>
-    </a>
-    <!-- 10 -->
-    <a href="#" class="reveal group col-span-6 md:col-span-3 aspect-[3/4] relative overflow-hidden rounded-sm block">
-      <div class="absolute inset-0 tile-ph img-zoom"></div>
-      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
-      <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">10 · Cartier</div>
-      <div class="absolute bottom-5 left-5 right-5 text-paper">
-        <div class="font-display text-2xl leading-none">Le Voyage Recommence</div>
-      </div>
-    </a>
-    <!-- 11 -->
-    <a href="#" class="reveal group col-span-6 md:col-span-3 aspect-[3/4] relative overflow-hidden rounded-sm block">
-      <img src="images/dream-5.jpg" alt="" class="absolute inset-0 w-full h-full object-cover img-zoom" />
-      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
-      <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">11 · Vacheron</div>
-      <div class="absolute bottom-5 left-5 right-5 text-paper">
-        <div class="font-display text-2xl leading-none">Complication Pop-up</div>
+        <div class="mt-2 text-xs text-paper/70">New Zero Vision</div>
       </div>
     </a>
 
-    <!-- 12 wide -->
-    <a href="#" class="reveal group col-span-12 md:col-span-8 aspect-[16/9] relative overflow-hidden rounded-sm block">
-      <img src="images/dream-6.jpg" alt="" class="absolute inset-0 w-full h-full object-cover img-zoom" />
+    <!-- 09 Samsung Semiconductor -->
+    <a href="#" class="reveal group col-span-6 md:col-span-3 aspect-[3/4] relative overflow-hidden rounded-sm block">
+      <div class="absolute inset-0 t-samsung tile-zoom dot-grid"></div>
       <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
-      <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">12 · 롯데면세점 · LDF House</div>
-      <div class="absolute bottom-5 left-5 right-5 text-paper">
-        <div class="font-display text-3xl md:text-4xl leading-none">명동 아나모픽 · 열기구</div>
-        <div class="mt-2 text-sm text-paper/70">Anamorphic Media Art</div>
+      <div class="tile-bigtype">DS</div>
+      <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">09 · 삼성반도체</div>
+      <div class="absolute bottom-5 left-5 right-5 text-paper tile-meta">
+        <div class="font-display text-2xl leading-none">평택 VIP 전시관</div>
+        <div class="mt-2 text-xs text-paper/70">Curved LED · 4 Languages</div>
       </div>
     </a>
-    <!-- 13 -->
-    <a href="#" class="reveal group col-span-12 md:col-span-4 aspect-square relative overflow-hidden rounded-sm block">
-      <div class="absolute inset-0 tile-ph img-zoom"></div>
+
+    <!-- 10 Cartier -->
+    <a href="#" class="reveal group col-span-6 md:col-span-3 aspect-[3/4] relative overflow-hidden rounded-sm block">
+      <div class="absolute inset-0 t-cartier tile-zoom dot-grid"></div>
       <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
+      <div class="tile-bigtype">C</div>
+      <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">10 · Cartier</div>
+      <div class="absolute bottom-5 left-5 right-5 text-paper tile-meta">
+        <div class="font-display text-2xl leading-none">Le Voyage<br />Recommence</div>
+        <div class="mt-2 text-xs text-paper/70">High Jewellery Pop-up</div>
+      </div>
+    </a>
+
+    <!-- 11 Vacheron -->
+    <a href="#" class="reveal group col-span-6 md:col-span-3 aspect-[3/4] relative overflow-hidden rounded-sm block">
+      <div class="absolute inset-0 t-vacheron tile-zoom dot-grid"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
+      <div class="tile-bigtype">VC</div>
+      <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">11 · Vacheron</div>
+      <div class="absolute bottom-5 left-5 right-5 text-paper tile-meta">
+        <div class="font-display text-2xl leading-none">Complication<br />Pop-up</div>
+        <div class="mt-2 text-xs text-paper/70">Maltese Cross · High Watchmaking</div>
+      </div>
+    </a>
+
+    <!-- 12 Lotte Duty Free (wide) -->
+    <a href="#" class="reveal group col-span-12 md:col-span-8 aspect-[16/9] relative overflow-hidden rounded-sm block">
+      <div class="absolute inset-0 t-cartier tile-zoom dot-grid" style="filter: hue-rotate(-15deg);"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
+      <div class="tile-bigtype">LDF</div>
+      <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">12 · 롯데면세점 · LDF House</div>
+      <div class="absolute bottom-5 left-5 right-5 text-paper tile-meta">
+        <div class="font-display text-3xl md:text-4xl leading-none">명동 아나모픽 · 열기구</div>
+        <div class="mt-2 text-sm text-paper/70">Anamorphic Media Art + Air Balloon Lift</div>
+      </div>
+    </a>
+
+    <!-- 13 DDP Light Show -->
+    <a href="#" class="reveal group col-span-12 md:col-span-4 aspect-square relative overflow-hidden rounded-sm block">
+      <div class="absolute inset-0 t-ddp tile-zoom dot-grid"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
+      <div class="tile-bigtype">DDP</div>
       <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">13 · DDP</div>
-      <div class="absolute bottom-5 left-5 right-5 text-paper">
+      <div class="absolute bottom-5 left-5 right-5 text-paper tile-meta">
         <div class="font-display text-2xl md:text-3xl leading-none">서울 라이트 쇼</div>
         <div class="mt-2 text-sm text-paper/70">김환기 × 버스데이</div>
       </div>
     </a>
 
-    <!-- 14 -->
+    <!-- 14 Veuve Clicquot -->
     <a href="#" class="reveal group col-span-6 md:col-span-3 aspect-square relative overflow-hidden rounded-sm block">
-      <div class="absolute inset-0 tile-ph img-zoom"></div>
+      <div class="absolute inset-0 t-veuve tile-zoom dot-grid"></div>
       <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
+      <div class="tile-bigtype">VC</div>
       <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">14 · Veuve Clicquot</div>
-      <div class="absolute bottom-5 left-5 right-5 text-paper">
+      <div class="absolute bottom-5 left-5 right-5 text-paper tile-meta">
         <div class="font-display text-xl md:text-2xl leading-none">Chalk Cellars</div>
-      </div>
-    </a>
-    <!-- 15 -->
-    <a href="#" class="reveal group col-span-6 md:col-span-3 aspect-square relative overflow-hidden rounded-sm block">
-      <img src="images/dream-2.jpg" alt="" class="absolute inset-0 w-full h-full object-cover img-zoom" style="object-position: right center;"/>
-      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
-      <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">15 · Canada Goose</div>
-      <div class="absolute bottom-5 left-5 right-5 text-paper">
-        <div class="font-display text-xl md:text-2xl leading-none">삼청각 Event</div>
-      </div>
-    </a>
-    <!-- 16 -->
-    <a href="#" class="reveal group col-span-6 md:col-span-3 aspect-square relative overflow-hidden rounded-sm block">
-      <div class="absolute inset-0 tile-ph img-zoom"></div>
-      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
-      <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">16 · Nespresso</div>
-      <div class="absolute bottom-5 left-5 right-5 text-paper">
-        <div class="font-display text-xl md:text-2xl leading-none">Seoul Jazz '25</div>
-      </div>
-    </a>
-    <!-- 17 -->
-    <a href="#" class="reveal group col-span-6 md:col-span-3 aspect-square relative overflow-hidden rounded-sm block">
-      <img src="images/dream-5.jpg" alt="" class="absolute inset-0 w-full h-full object-cover img-zoom" style="object-position: center 30%;"/>
-      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
-      <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">17 · Genesis</div>
-      <div class="absolute bottom-5 left-5 right-5 text-paper">
-        <div class="font-display text-xl md:text-2xl leading-none">Christmas Village</div>
+        <div class="mt-1 text-xs text-paper/70">Yellow Label</div>
       </div>
     </a>
 
-    <!-- 18 wide -->
-    <a href="#" class="reveal group col-span-12 md:col-span-4 aspect-square relative overflow-hidden rounded-sm block">
-      <div class="absolute inset-0 tile-ph img-zoom"></div>
+    <!-- 15 Canada Goose -->
+    <a href="#" class="reveal group col-span-6 md:col-span-3 aspect-square relative overflow-hidden rounded-sm block">
+      <div class="absolute inset-0 t-canada tile-zoom dot-grid"></div>
       <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
+      <div class="tile-bigtype">CG</div>
+      <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">15 · Canada Goose</div>
+      <div class="absolute bottom-5 left-5 right-5 text-paper tile-meta">
+        <div class="font-display text-xl md:text-2xl leading-none">삼청각 Event</div>
+        <div class="mt-1 text-xs text-paper/70">FW · SS Collection</div>
+      </div>
+    </a>
+
+    <!-- 16 Nespresso -->
+    <a href="#" class="reveal group col-span-6 md:col-span-3 aspect-square relative overflow-hidden rounded-sm block">
+      <div class="absolute inset-0 t-nespresso tile-zoom dot-grid"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
+      <div class="tile-bigtype">N</div>
+      <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">16 · Nespresso</div>
+      <div class="absolute bottom-5 left-5 right-5 text-paper tile-meta">
+        <div class="font-display text-xl md:text-2xl leading-none">Seoul Jazz '25</div>
+        <div class="mt-1 text-xs text-paper/70">Pistachio Green</div>
+      </div>
+    </a>
+
+    <!-- 17 Genesis -->
+    <a href="#" class="reveal group col-span-6 md:col-span-3 aspect-square relative overflow-hidden rounded-sm block">
+      <div class="absolute inset-0 t-genesis tile-zoom dot-grid"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
+      <div class="tile-bigtype">G</div>
+      <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">17 · Genesis</div>
+      <div class="absolute bottom-5 left-5 right-5 text-paper tile-meta">
+        <div class="font-display text-xl md:text-2xl leading-none">Christmas Village</div>
+        <div class="mt-1 text-xs text-paper/70">Projection · Lighting Show</div>
+      </div>
+    </a>
+
+    <!-- 18 Woori Mom-Con -->
+    <a href="#" class="reveal group col-span-12 md:col-span-4 aspect-square relative overflow-hidden rounded-sm block">
+      <div class="absolute inset-0 t-woori tile-zoom dot-grid"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
+      <div class="tile-bigtype">RFID</div>
       <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">18 · 우리금융</div>
-      <div class="absolute bottom-5 left-5 right-5 text-paper">
+      <div class="absolute bottom-5 left-5 right-5 text-paper tile-meta">
         <div class="font-display text-2xl md:text-3xl leading-none">모모콘 LED 팔찌</div>
         <div class="mt-2 text-sm text-paper/70">RFID Interactive System</div>
       </div>
     </a>
-    <!-- 19 -->
+
+    <!-- 19 LG AWE -->
     <a href="#" class="reveal group col-span-6 md:col-span-4 aspect-square relative overflow-hidden rounded-sm block">
-      <img src="images/dream-4.jpg" alt="" class="absolute inset-0 w-full h-full object-cover img-zoom" style="object-position: right center;"/>
+      <div class="absolute inset-0 t-awe tile-zoom dot-grid"></div>
       <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
+      <div class="tile-bigtype">AWE</div>
       <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">19 · LG AWE 2026</div>
-      <div class="absolute bottom-5 left-5 right-5 text-paper">
+      <div class="absolute bottom-5 left-5 right-5 text-paper tile-meta">
         <div class="font-display text-2xl md:text-3xl leading-none">AI Gallery · Appliance</div>
+        <div class="mt-2 text-sm text-paper/70">Wall Mapping · W6 Wallpaper TV</div>
       </div>
     </a>
-    <!-- 20 -->
+
+    <!-- 20 Starfield Library -->
     <a href="#" class="reveal group col-span-6 md:col-span-4 aspect-square relative overflow-hidden rounded-sm block">
-      <div class="absolute inset-0 tile-ph img-zoom"></div>
+      <div class="absolute inset-0 t-starfield tile-zoom dot-grid"></div>
       <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
+      <div class="tile-bigtype">STAR</div>
       <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">20 · Starfield</div>
-      <div class="absolute bottom-5 left-5 right-5 text-paper">
+      <div class="absolute bottom-5 left-5 right-5 text-paper tile-meta">
         <div class="font-display text-2xl md:text-3xl leading-none">별마당 도서관</div>
         <div class="mt-2 text-sm text-paper/70">Seasonal Renovation</div>
       </div>
@@ -568,7 +653,6 @@
     </div>
   </div>
 
-  <!-- Marquee 1 -->
   <div class="overflow-hidden border-y border-paper/10 py-8">
     <div class="marquee-track font-display text-paper/80 text-3xl md:text-5xl uppercase">
       <div class="flex items-center gap-8 pr-8">
@@ -606,7 +690,6 @@
     </div>
   </div>
 
-  <!-- Marquee 2 reverse -->
   <div class="overflow-hidden border-b border-paper/10 py-8">
     <div class="marquee-track marquee-slow font-display text-paper/80 text-3xl md:text-5xl uppercase" style="animation-direction: reverse;">
       <div class="flex items-center gap-8 pr-8">
@@ -651,9 +734,11 @@
 
 <!-- ============ CTA / CONTACT ============ -->
 <section id="contact" class="relative px-6 md:px-10 py-28 md:py-44 overflow-hidden">
-  <!-- Faint backdrop -->
-  <div class="absolute inset-0 opacity-30">
-    <img src="images/dream-memory.jpg" alt="" class="w-full h-full object-cover" style="object-position: 65% 50%; filter: blur(40px);"/>
+  <div class="absolute inset-0 opacity-25">
+    <picture>
+      <source srcset="images/dream-hero.webp" type="image/webp">
+      <img src="images/dream-hero.jpg" alt="" class="w-full h-full object-cover" style="object-position: center 50%; filter: blur(40px) saturate(1.3);" loading="lazy"/>
+    </picture>
   </div>
   <div class="absolute inset-0 bg-ink/80"></div>
 
@@ -703,7 +788,6 @@
 </footer>
 
 <script>
-  // Scroll reveal
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((e) => {
       if (e.isIntersecting) {
@@ -715,7 +799,6 @@
 
   document.querySelectorAll('.reveal, .reveal-up, .reveal-word').forEach(el => observer.observe(el));
 
-  // Trigger hero words immediately after load
   window.addEventListener('load', () => {
     setTimeout(() => {
       document.querySelectorAll('#top .reveal-word').forEach(el => el.classList.add('is-visible'));
