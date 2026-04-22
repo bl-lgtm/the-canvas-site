@@ -45,7 +45,6 @@
   .display-xl { font-size: clamp(2.5rem, 8vw, 7rem); line-height: 0.9; letter-spacing: -0.03em; }
   .display-l { font-size: clamp(2rem, 5vw, 4rem); line-height: 0.95; letter-spacing: -0.02em; }
 
-  /* Scroll reveal */
   .reveal { opacity: 0; transform: translateY(40px); transition: opacity 1s cubic-bezier(.2,.7,.2,1), transform 1s cubic-bezier(.2,.7,.2,1); }
   .reveal.is-visible { opacity: 1; transform: translateY(0); }
   .reveal-up { opacity: 0; transform: translateY(80px); transition: opacity 1.1s cubic-bezier(.2,.7,.2,1), transform 1.1s cubic-bezier(.2,.7,.2,1); }
@@ -54,58 +53,17 @@
   .reveal-word.is-visible { opacity: 1; transform: translateY(0); }
   .reveal-clip { overflow: hidden; display: inline-block; vertical-align: top; }
 
-  /* Marquee */
   @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
   .marquee-track { display: inline-flex; animation: marquee 40s linear infinite; white-space: nowrap; }
   .marquee-track:hover { animation-play-state: paused; }
   @keyframes marquee-slow { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
   .marquee-slow { animation: marquee-slow 80s linear infinite; }
 
-  /* Noise overlay */
   .noise::before {
     content: "";
     position: fixed; inset: 0;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.9  0 0 0 0 0.9  0 0 0 0 0.9  0 0 0 0.05 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-    opacity: .35; pointer-events: none; z-index: 60; mix-blend-mode: overlay;
-  }
-
-  /* Per-project tile themes — brand-aligned gradients */
-  .t-lg-webos   { background: radial-gradient(80% 60% at 30% 20%, rgba(120,200,255,.35), transparent 60%), radial-gradient(50% 50% at 80% 85%, rgba(200,255,58,.15), transparent 60%), linear-gradient(135deg,#0b2340,#0a0a0a); }
-  .t-lg-ai      { background: radial-gradient(70% 60% at 20% 20%, rgba(177,120,255,.4), transparent 60%), radial-gradient(60% 60% at 80% 80%, rgba(255,100,180,.25), transparent 60%), linear-gradient(135deg,#1a0b2a,#0a0a0a); }
-  .t-lg-alpha   { background: radial-gradient(90% 70% at 50% 0%, rgba(255,180,80,.25), transparent 60%), linear-gradient(135deg,#1a1a1a,#0a0a0a); }
-  .t-lg-robot   { background: radial-gradient(70% 60% at 30% 30%, rgba(106,91,255,.4), transparent 60%), radial-gradient(50% 50% at 80% 80%, rgba(200,255,58,.22), transparent 60%), linear-gradient(135deg,#0f0f1f,#0a0a0a); }
-  .t-lg-premiere{ background: radial-gradient(80% 60% at 30% 20%, rgba(255,70,90,.38), transparent 60%), radial-gradient(60% 60% at 80% 80%, rgba(140,50,220,.3), transparent 60%), linear-gradient(135deg,#220a18,#0a0a0a); }
-  .t-ibk        { background: radial-gradient(70% 60% at 30% 30%, rgba(60,120,255,.35), transparent 60%), radial-gradient(50% 60% at 80% 80%, rgba(255,200,120,.22), transparent 60%), linear-gradient(135deg,#07152b,#0a0a0a); }
-  .t-mars       { background: radial-gradient(80% 70% at 20% 20%, rgba(255,140,80,.35), transparent 60%), radial-gradient(60% 60% at 80% 80%, rgba(60,200,220,.3), transparent 60%), linear-gradient(135deg,#20110a,#0a0a0a); }
-  .t-sk         { background: radial-gradient(70% 60% at 50% 50%, rgba(80,220,200,.35), transparent 60%), radial-gradient(60% 60% at 80% 80%, rgba(50,140,220,.25), transparent 60%), linear-gradient(135deg,#062022,#0a0a0a); }
-  .t-samsung    { background: radial-gradient(70% 60% at 30% 20%, rgba(160,200,240,.28), transparent 60%), linear-gradient(135deg,#0f1720,#0a0a0a); }
-  .t-cartier    { background: radial-gradient(70% 60% at 30% 30%, rgba(220,40,50,.4), transparent 60%), radial-gradient(60% 60% at 80% 80%, rgba(255,180,120,.18), transparent 60%), linear-gradient(135deg,#2a070a,#0a0a0a); }
-  .t-vacheron   { background: radial-gradient(80% 60% at 30% 20%, rgba(240,200,110,.3), transparent 60%), radial-gradient(50% 60% at 80% 80%, rgba(0,80,60,.35), transparent 60%), linear-gradient(135deg,#0f1a12,#0a0a0a); }
-  .t-ddp        { background: radial-gradient(70% 60% at 30% 30%, rgba(255,130,170,.4), transparent 60%), radial-gradient(60% 60% at 80% 80%, rgba(255,180,80,.25), transparent 60%), linear-gradient(135deg,#2a0a1b,#0a0a0a); }
-  .t-veuve      { background: radial-gradient(80% 70% at 30% 30%, rgba(255,220,60,.42), transparent 60%), linear-gradient(135deg,#1b1605,#0a0a0a); }
-  .t-canada     { background: radial-gradient(70% 60% at 30% 30%, rgba(180,40,50,.35), transparent 60%), radial-gradient(60% 60% at 80% 80%, rgba(200,200,200,.12), transparent 60%), linear-gradient(135deg,#1a0c0e,#0a0a0a); }
-  .t-nespresso  { background: radial-gradient(70% 60% at 30% 30%, rgba(255,140,60,.4), transparent 60%), radial-gradient(60% 60% at 80% 80%, rgba(180,240,120,.22), transparent 60%), linear-gradient(135deg,#1f0d05,#0a0a0a); }
-  .t-genesis    { background: radial-gradient(70% 60% at 30% 30%, rgba(200,170,100,.3), transparent 60%), radial-gradient(60% 60% at 80% 80%, rgba(40,80,70,.3), transparent 60%), linear-gradient(135deg,#10130f,#0a0a0a); }
-  .t-woori      { background: radial-gradient(70% 60% at 30% 30%, rgba(90,150,255,.35), transparent 60%), radial-gradient(60% 60% at 80% 80%, rgba(255,255,255,.12), transparent 60%), linear-gradient(135deg,#0a1530,#0a0a0a); }
-  .t-awe        { background: radial-gradient(80% 60% at 30% 20%, rgba(200,220,255,.22), transparent 60%), radial-gradient(50% 60% at 80% 80%, rgba(106,91,255,.25), transparent 60%), linear-gradient(135deg,#0f1220,#0a0a0a); }
-  .t-starfield  { background: radial-gradient(80% 70% at 30% 20%, rgba(220,200,160,.3), transparent 60%), radial-gradient(50% 60% at 80% 80%, rgba(140,100,60,.2), transparent 60%), linear-gradient(135deg,#1a150f,#0a0a0a); }
-  .t-default    { background: radial-gradient(80% 60% at 30% 20%, rgba(106,91,255,.2), transparent 60%), radial-gradient(60% 50% at 80% 85%, rgba(200,255,58,.1), transparent 60%), linear-gradient(135deg,#131212,#1b1a1a); }
-
-  /* Generic service tile themes */
-  .t-creative { background: radial-gradient(80% 60% at 30% 20%, rgba(200,255,58,.18), transparent 60%), radial-gradient(50% 60% at 80% 85%, rgba(255,255,255,.06), transparent 60%), linear-gradient(135deg,#0f0f0f,#1a1a1a); }
-  .t-contents { background: radial-gradient(80% 60% at 30% 20%, rgba(106,91,255,.28), transparent 60%), radial-gradient(50% 60% at 80% 85%, rgba(60,200,220,.18), transparent 60%), linear-gradient(135deg,#0b0f25,#0a0a0a); }
-  .t-space    { background: radial-gradient(80% 60% at 30% 20%, rgba(255,130,170,.28), transparent 60%), radial-gradient(60% 60% at 80% 80%, rgba(255,180,80,.2), transparent 60%), linear-gradient(135deg,#1a0a18,#0a0a0a); }
-  .t-brand    { background: radial-gradient(80% 60% at 30% 20%, rgba(240,200,110,.24), transparent 60%), radial-gradient(50% 60% at 80% 80%, rgba(0,80,60,.28), transparent 60%), linear-gradient(135deg,#0f1a12,#0a0a0a); }
-
-  /* Animated dot grid overlay for tiles */
-  .dot-grid::after {
-    content:"";
-    position:absolute; inset:0;
-    background-image: radial-gradient(rgba(244,241,234,.08) 1px, transparent 1px);
-    background-size: 22px 22px;
-    mask-image: linear-gradient(180deg, transparent, #000 30%, #000 70%, transparent);
-    -webkit-mask-image: linear-gradient(180deg, transparent, #000 30%, #000 70%, transparent);
-    pointer-events:none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.9  0 0 0 0 0.9  0 0 0 0 0.9  0 0 0 0 0.05 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    opacity: .3; pointer-events: none; z-index: 60; mix-blend-mode: overlay;
   }
 
   .card-hover { transition: transform .6s cubic-bezier(.2,.7,.2,1); }
@@ -115,40 +73,39 @@
   .group:hover .tile-meta { transform: translateY(-2px); }
   .tile-meta { transition: transform .6s cubic-bezier(.2,.7,.2,1); }
 
-  /* Horizontal scroll services */
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-  /* Cursor blink */
   @keyframes blink { 0%,49% {opacity:1;} 50%,100% {opacity:0;} }
   .blink { animation: blink 1.1s steps(1) infinite; }
 
-  /* Highlight */
   .hl { background-image: linear-gradient(transparent 65%, rgba(200,255,58,.55) 65%); padding: 0 .1em; }
-
-  /* Section divider */
   .rule { height: 1px; background: linear-gradient(90deg, transparent, rgba(244,241,234,.25), transparent); }
 
-  /* Custom underline link */
   .u-link { position: relative; }
   .u-link::after { content: ""; position: absolute; left: 0; bottom: -3px; width: 100%; height: 1px; background: currentColor; transform-origin: right; transform: scaleX(0); transition: transform .6s cubic-bezier(.2,.7,.2,1); }
   .u-link:hover::after { transform-origin: left; transform: scaleX(1); }
 
-  /* Hero gradient fade */
   .hero-fade { background: linear-gradient(180deg, rgba(10,10,10,0) 40%, rgba(10,10,10,.55) 80%, #0a0a0a 100%); }
 
-  /* Tag pill */
   .pill { border: 1px solid rgba(244,241,234,.2); border-radius: 999px; padding: 6px 14px; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; }
 
-  /* Big faded type inside tile */
   .tile-bigtype {
     position: absolute; bottom: -8%; right: -4%;
     font-family: 'Anton','Archivo',sans-serif;
     font-size: clamp(4rem, 12vw, 14rem);
     line-height: .8;
-    color: rgba(244,241,234,.07);
+    color: rgba(244,241,234,.06);
     pointer-events: none;
     letter-spacing: -0.04em;
+    mix-blend-mode: screen;
+  }
+
+  .tile-img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center;
   }
 </style>
 </head>
@@ -288,6 +245,31 @@
   </div>
 </section>
 
+<!-- ============ ORGANIZATION ============ -->
+<section id="organization" class="relative px-6 md:px-10 py-20 md:py-28 border-t border-paper/10">
+  <div class="grid grid-cols-12 gap-6 md:gap-10 mb-10">
+    <div class="col-span-12 md:col-span-3">
+      <div class="pill reveal">Organization</div>
+    </div>
+    <div class="col-span-12 md:col-span-9">
+      <h3 class="font-display display-l text-paper reveal-up">
+        3 Teams.<br />
+        <span class="text-paper/40">One studio.</span>
+      </h3>
+      <p class="mt-6 text-paper/70 max-w-xl reveal leading-relaxed">
+        Contents · Design · Development 팀이 한 팀처럼 움직여 기획부터 실행까지.
+      </p>
+    </div>
+  </div>
+
+  <div class="reveal mt-10 rounded-sm overflow-hidden border border-paper/10 bg-ink">
+    <picture>
+      <source srcset="images/organization.webp" type="image/webp">
+      <img src="images/organization.jpg" alt="The Canvas Organization" class="w-full h-auto" loading="lazy" />
+    </picture>
+  </div>
+</section>
+
 <div class="rule mx-6 md:mx-10"></div>
 
 <!-- ============ SERVICES ============ -->
@@ -306,9 +288,13 @@
 
   <div class="no-scrollbar overflow-x-auto -mx-6 md:-mx-10 px-6 md:px-10 snap-x snap-mandatory">
     <div class="flex gap-5 md:gap-8 pb-4">
+      <!-- Creative & Strategy → Cartier -->
       <article class="reveal snap-start shrink-0 w-[84vw] md:w-[32vw] min-h-[64vh] relative overflow-hidden rounded-sm card-hover group">
-        <div class="absolute inset-0 t-creative tile-zoom dot-grid"></div>
-        <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent"></div>
+        <picture>
+          <source srcset="images/proj-10.webp" type="image/webp">
+          <img src="images/proj-10.jpg" alt="" class="tile-img tile-zoom" loading="lazy" style="object-position: 50% 40%;" />
+        </picture>
+        <div class="absolute inset-0 bg-gradient-to-t from-ink/95 via-ink/30 to-ink/20"></div>
         <div class="tile-bigtype">01</div>
         <div class="absolute top-6 left-6 right-6 flex justify-between items-start text-paper">
           <div class="font-mono text-xs tracking-widest">01 / 04</div>
@@ -317,13 +303,17 @@
         <div class="absolute bottom-6 left-6 right-6 text-paper tile-meta">
           <div class="text-xs uppercase tracking-[.2em] text-signal mb-3">Creative &amp; Strategy</div>
           <h3 class="font-display text-4xl md:text-5xl leading-none">브랜드의<br />시나리오.</h3>
-          <p class="mt-4 text-sm text-paper/70 leading-relaxed">전략·기획·아트 디렉션으로 브랜드 장면의 서사를 설계합니다.</p>
+          <p class="mt-4 text-sm text-paper/75 leading-relaxed">전략·기획·아트 디렉션으로<br class="hidden md:block" />브랜드 장면의 서사를 설계합니다.</p>
         </div>
       </article>
 
+      <!-- Contents Marketing → IBK -->
       <article class="reveal snap-start shrink-0 w-[84vw] md:w-[32vw] min-h-[64vh] relative overflow-hidden rounded-sm card-hover group" style="transition-delay:.1s">
-        <div class="absolute inset-0 t-contents tile-zoom dot-grid"></div>
-        <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent"></div>
+        <picture>
+          <source srcset="images/proj-06.webp" type="image/webp">
+          <img src="images/proj-06.jpg" alt="" class="tile-img tile-zoom" loading="lazy" />
+        </picture>
+        <div class="absolute inset-0 bg-gradient-to-t from-ink/95 via-ink/30 to-ink/20"></div>
         <div class="tile-bigtype">02</div>
         <div class="absolute top-6 left-6 right-6 flex justify-between items-start text-paper">
           <div class="font-mono text-xs tracking-widest">02 / 04</div>
@@ -332,13 +322,17 @@
         <div class="absolute bottom-6 left-6 right-6 text-paper tile-meta">
           <div class="text-xs uppercase tracking-[.2em] text-signal mb-3">Contents Marketing</div>
           <h3 class="font-display text-4xl md:text-5xl leading-none">빛으로<br />쓰는 문장.</h3>
-          <p class="mt-4 text-sm text-paper/70 leading-relaxed">LED · 3D 모션 · 아나모픽 · AI 영상까지, 모든 화면을 하나의 서사로.</p>
+          <p class="mt-4 text-sm text-paper/75 leading-relaxed">LED · 3D 모션 · 아나모픽 · AI 영상까지,<br class="hidden md:block" />모든 화면을 하나의 서사로.</p>
         </div>
       </article>
 
+      <!-- Space Experience → 꿈의 기억 -->
       <article class="reveal snap-start shrink-0 w-[84vw] md:w-[32vw] min-h-[64vh] relative overflow-hidden rounded-sm card-hover group" style="transition-delay:.2s">
-        <div class="absolute inset-0 t-space tile-zoom dot-grid"></div>
-        <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent"></div>
+        <picture>
+          <source srcset="images/proj-02.webp" type="image/webp">
+          <img src="images/proj-02.jpg" alt="" class="tile-img tile-zoom" loading="lazy" />
+        </picture>
+        <div class="absolute inset-0 bg-gradient-to-t from-ink/95 via-ink/30 to-ink/20"></div>
         <div class="tile-bigtype">03</div>
         <div class="absolute top-6 left-6 right-6 flex justify-between items-start text-paper">
           <div class="font-mono text-xs tracking-widest">03 / 04</div>
@@ -347,13 +341,17 @@
         <div class="absolute bottom-6 left-6 right-6 text-paper tile-meta">
           <div class="text-xs uppercase tracking-[.2em] text-signal mb-3">Space Experience</div>
           <h3 class="font-display text-4xl md:text-5xl leading-none">걷는<br />전시.</h3>
-          <p class="mt-4 text-sm text-paper/70 leading-relaxed">전시·팝업 공간을 동선과 감각으로 설계해 체험으로 완성합니다.</p>
+          <p class="mt-4 text-sm text-paper/75 leading-relaxed">전시·팝업 공간을 동선과 감각으로<br class="hidden md:block" />설계해 체험으로 완성합니다.</p>
         </div>
       </article>
 
+      <!-- Branding → Vacheron -->
       <article class="reveal snap-start shrink-0 w-[84vw] md:w-[32vw] min-h-[64vh] relative overflow-hidden rounded-sm card-hover group" style="transition-delay:.3s">
-        <div class="absolute inset-0 t-brand tile-zoom dot-grid"></div>
-        <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent"></div>
+        <picture>
+          <source srcset="images/proj-11.webp" type="image/webp">
+          <img src="images/proj-11.jpg" alt="" class="tile-img tile-zoom" loading="lazy" />
+        </picture>
+        <div class="absolute inset-0 bg-gradient-to-t from-ink/95 via-ink/30 to-ink/20"></div>
         <div class="tile-bigtype">04</div>
         <div class="absolute top-6 left-6 right-6 flex justify-between items-start text-paper">
           <div class="font-mono text-xs tracking-widest">04 / 04</div>
@@ -362,7 +360,7 @@
         <div class="absolute bottom-6 left-6 right-6 text-paper tile-meta">
           <div class="text-xs uppercase tracking-[.2em] text-signal mb-3">Branding</div>
           <h3 class="font-display text-4xl md:text-5xl leading-none">공간에<br />아이덴티티를.</h3>
-          <p class="mt-4 text-sm text-paper/70 leading-relaxed">럭셔리 팝업부터 리테일 리노베이션까지, 공간이 곧 브랜드가 되도록.</p>
+          <p class="mt-4 text-sm text-paper/75 leading-relaxed">럭셔리 팝업부터 리테일 리노베이션까지,<br class="hidden md:block" />공간이 곧 브랜드가 되도록.</p>
         </div>
       </article>
     </div>
@@ -390,248 +388,285 @@
     </div>
   </div>
 
-  <!-- Portfolio grid -->
   <div class="grid grid-cols-12 gap-3 md:gap-5">
 
-    <!-- 01 LG CES WebOS -->
+    <!-- 01 LG CES WebOS Goldberg (wide hero) -->
     <a href="#" class="reveal group col-span-12 md:col-span-8 aspect-[16/10] relative overflow-hidden rounded-sm block">
-      <div class="absolute inset-0 t-lg-webos tile-zoom dot-grid"></div>
-      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
-      <div class="tile-bigtype">WEBOS</div>
+      <picture>
+        <source srcset="images/proj-01.webp" type="image/webp">
+        <img src="images/proj-01.jpg" alt="LG CES WebOS Goldberg" class="tile-img tile-zoom" loading="lazy" />
+      </picture>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent"></div>
       <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">01 · 2026 · LG CES</div>
       <div class="absolute bottom-5 left-5 right-5 text-paper tile-meta">
         <div class="font-display text-3xl md:text-5xl leading-none">MS ZONE — WebOS Goldberg</div>
-        <div class="mt-2 text-sm text-paper/70">Interactive Goldberg + Real-time Media</div>
+        <div class="mt-2 text-sm text-paper/75 leading-relaxed max-w-xl">디지털과 아날로그를 결합한 인터랙티브 골드버그 장치. 취향 선택부터 AI 추천까지 놀이로 연결한 체험형 콘텐츠.</div>
       </div>
     </a>
 
-    <!-- 02 꿈의 기억 (유일하게 실제 이미지) -->
+    <!-- 02 꿈의 기억 -->
     <a href="#" class="reveal group col-span-12 md:col-span-4 aspect-[4/5] relative overflow-hidden rounded-sm block">
       <picture>
-        <source srcset="images/dream-thumb.webp" type="image/webp">
-        <img src="images/dream-thumb.jpg" alt="꿈의 기억" class="absolute inset-0 w-full h-full object-cover tile-zoom" loading="lazy" />
+        <source srcset="images/proj-02.webp" type="image/webp">
+        <img src="images/proj-02.jpg" alt="꿈의 기억" class="tile-img tile-zoom" loading="lazy" />
       </picture>
-      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent"></div>
       <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">02 · 2023 · Coex Living Fair</div>
       <div class="absolute bottom-5 left-5 right-5 text-paper tile-meta">
         <div class="font-display text-3xl md:text-4xl leading-none">꿈의 기억</div>
-        <div class="mt-2 text-sm text-paper/70">LED · Lighting · Media Facade</div>
+        <div class="mt-2 text-sm text-paper/75 leading-relaxed">LED·조명·특수효과로 달빛과 고래를 통해<br class="hidden md:block"/>잊혀진 꿈을 찾는 과정을 표현.</div>
       </div>
     </a>
 
     <!-- 03 LG CES AI Gallery -->
     <a href="#" class="reveal group col-span-6 md:col-span-4 aspect-square relative overflow-hidden rounded-sm block">
-      <div class="absolute inset-0 t-lg-ai tile-zoom dot-grid"></div>
-      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
-      <div class="tile-bigtype">AI</div>
+      <picture>
+        <source srcset="images/proj-03.webp" type="image/webp">
+        <img src="images/proj-03.jpg" alt="LG CES AI Gallery" class="tile-img tile-zoom" loading="lazy" />
+      </picture>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent"></div>
       <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">03 · 2026 · LG CES</div>
       <div class="absolute bottom-5 left-5 right-5 text-paper tile-meta">
         <div class="font-display text-2xl md:text-3xl leading-none">MS ZONE — AI GALLERY</div>
-        <div class="mt-2 text-sm text-paper/70">Projection Mapping · 3 Themes</div>
+        <div class="mt-2 text-xs md:text-sm text-paper/75 leading-relaxed">프로젝션 맵핑 기반 3테마 몰입형 공간.<br/>W6 Wallpaper TV 5대 통합.</div>
       </div>
     </a>
 
     <!-- 04 LG U+ Robot -->
     <a href="#" class="reveal group col-span-6 md:col-span-4 aspect-square relative overflow-hidden rounded-sm block">
-      <div class="absolute inset-0 t-lg-robot tile-zoom dot-grid"></div>
-      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
-      <div class="tile-bigtype">ROBOT</div>
+      <picture>
+        <source srcset="images/proj-04.webp" type="image/webp">
+        <img src="images/proj-04.jpg" alt="LG U+ Robot Presentation" class="tile-img tile-zoom" loading="lazy" />
+      </picture>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent"></div>
       <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">04 · 2026 · LG U+ MWC</div>
       <div class="absolute bottom-5 left-5 right-5 text-paper tile-meta">
         <div class="font-display text-2xl md:text-3xl leading-none">Robot Presentation</div>
-        <div class="mt-2 text-sm text-paper/70">8 Isometric Episodes · Live Robot Sync</div>
+        <div class="mt-2 text-xs md:text-sm text-paper/75 leading-relaxed">8 에피소드 아이소메트릭 3D + 실시간<br/>로봇 인터랙션으로 AI 일상 시연.</div>
       </div>
     </a>
 
     <!-- 05 LG CES World Premiere -->
     <a href="#" class="reveal group col-span-12 md:col-span-4 aspect-square relative overflow-hidden rounded-sm block">
-      <div class="absolute inset-0 t-lg-premiere tile-zoom dot-grid"></div>
-      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
-      <div class="tile-bigtype">FURON</div>
+      <picture>
+        <source srcset="images/proj-05.webp" type="image/webp">
+        <img src="images/proj-05.jpg" alt="LG CES World Premiere" class="tile-img tile-zoom" loading="lazy" />
+      </picture>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent"></div>
       <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">05 · 2026 · LG CES</div>
       <div class="absolute bottom-5 left-5 right-5 text-paper tile-meta">
         <div class="font-display text-2xl md:text-3xl leading-none">World Premiere</div>
-        <div class="mt-2 text-sm text-paper/70">Split LED + T-OLED Presentation</div>
+        <div class="mt-2 text-xs md:text-sm text-paper/75 leading-relaxed">분할형 대형 LED + T-OLED 프레젠테이션.<br/>CEO 인물 센싱 · HVAC GUI 시각화.</div>
       </div>
     </a>
 
-    <!-- 06 IBK -->
+    <!-- 06 IBK (wide) -->
     <a href="#" class="reveal group col-span-12 md:col-span-6 aspect-[16/9] relative overflow-hidden rounded-sm block">
-      <div class="absolute inset-0 t-ibk tile-zoom dot-grid"></div>
-      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
-      <div class="tile-bigtype">IBK</div>
+      <picture>
+        <source srcset="images/proj-06.webp" type="image/webp">
+        <img src="images/proj-06.jpg" alt="IBK 본점 홍보관" class="tile-img tile-zoom" loading="lazy" />
+      </picture>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent"></div>
       <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">06 · 2025 · IBK</div>
       <div class="absolute bottom-5 left-5 right-5 text-paper tile-meta">
         <div class="font-display text-3xl md:text-4xl leading-none">IBK 본점 홍보관</div>
-        <div class="mt-2 text-sm text-paper/70">Infinity Mirror · Anamorphic Mapping</div>
+        <div class="mt-2 text-sm text-paper/75 leading-relaxed">인피니티 미러와 2면 프로젝션 맵핑, 아나몰픽 연출로<br class="hidden md:block"/>IBK의 역사·혁신·비전을 입체적으로 구현.</div>
       </div>
     </a>
 
-    <!-- 07 MARS 2025 -->
+    <!-- 07 MARS 2025 신세계 -->
     <a href="#" class="reveal group col-span-12 md:col-span-6 aspect-[16/9] relative overflow-hidden rounded-sm block">
-      <div class="absolute inset-0 t-mars tile-zoom dot-grid"></div>
-      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
-      <div class="tile-bigtype">MARS</div>
+      <picture>
+        <source srcset="images/proj-07.webp" type="image/webp">
+        <img src="images/proj-07.jpg" alt="MARS 2025 신세계 프라퍼티" class="tile-img tile-zoom" loading="lazy" />
+      </picture>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent"></div>
       <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">07 · 2025 · 신세계</div>
       <div class="absolute bottom-5 left-5 right-5 text-paper tile-meta">
         <div class="font-display text-3xl md:text-4xl leading-none">MARS 2025 · 360°</div>
-        <div class="mt-2 text-sm text-paper/70">신세계 프라퍼티 · 스타베이 시티</div>
+        <div class="mt-2 text-sm text-paper/75 leading-relaxed">화성 스타베이 시티를 360° 몰입 영상관으로 구현.<br class="hidden md:block"/>AI 영상생성 × 3D 그래픽의 도시 경험.</div>
       </div>
     </a>
 
-    <!-- 08 SK Sphere -->
+    <!-- 08 SK CES Sphere -->
     <a href="#" class="reveal group col-span-6 md:col-span-3 aspect-[3/4] relative overflow-hidden rounded-sm block">
-      <div class="absolute inset-0 t-sk tile-zoom dot-grid"></div>
-      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
-      <div class="tile-bigtype">6M</div>
+      <picture>
+        <source srcset="images/proj-08.webp" type="image/webp">
+        <img src="images/proj-08.jpg" alt="SK CES Sphere" class="tile-img tile-zoom" loading="lazy" />
+      </picture>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent"></div>
       <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">08 · SK CES</div>
       <div class="absolute bottom-5 left-5 right-5 text-paper tile-meta">
         <div class="font-display text-2xl leading-none">Sphere 6m</div>
-        <div class="mt-2 text-xs text-paper/70">New Zero Vision</div>
+        <div class="mt-2 text-xs text-paper/75 leading-relaxed">6m 지름 LED에 상영되는 몰입형 3D.<br/>SK New Zero 비전 시각화.</div>
       </div>
     </a>
 
-    <!-- 09 Samsung Semiconductor -->
+    <!-- 09 삼성반도체 평택 -->
     <a href="#" class="reveal group col-span-6 md:col-span-3 aspect-[3/4] relative overflow-hidden rounded-sm block">
-      <div class="absolute inset-0 t-samsung tile-zoom dot-grid"></div>
-      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
-      <div class="tile-bigtype">DS</div>
+      <picture>
+        <source srcset="images/proj-09.webp" type="image/webp">
+        <img src="images/proj-09.jpg" alt="삼성반도체 평택 VIP 전시관" class="tile-img tile-zoom" loading="lazy" />
+      </picture>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent"></div>
       <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">09 · 삼성반도체</div>
       <div class="absolute bottom-5 left-5 right-5 text-paper tile-meta">
         <div class="font-display text-2xl leading-none">평택 VIP 전시관</div>
-        <div class="mt-2 text-xs text-paper/70">Curved LED · 4 Languages</div>
+        <div class="mt-2 text-xs text-paper/75 leading-relaxed">커브드 LED 4개국어 콘텐츠로<br/>50년 반도체 리더십 전달.</div>
       </div>
     </a>
 
     <!-- 10 Cartier -->
     <a href="#" class="reveal group col-span-6 md:col-span-3 aspect-[3/4] relative overflow-hidden rounded-sm block">
-      <div class="absolute inset-0 t-cartier tile-zoom dot-grid"></div>
-      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
-      <div class="tile-bigtype">C</div>
+      <picture>
+        <source srcset="images/proj-10.webp" type="image/webp">
+        <img src="images/proj-10.jpg" alt="Cartier Pop-up" class="tile-img tile-zoom" loading="lazy" />
+      </picture>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent"></div>
       <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">10 · Cartier</div>
       <div class="absolute bottom-5 left-5 right-5 text-paper tile-meta">
         <div class="font-display text-2xl leading-none">Le Voyage<br />Recommence</div>
-        <div class="mt-2 text-xs text-paper/70">High Jewellery Pop-up</div>
+        <div class="mt-2 text-xs text-paper/75 leading-relaxed">하이 주얼리의 장인정신을<br/>한국적 미감으로 재해석한 공간.</div>
       </div>
     </a>
 
     <!-- 11 Vacheron -->
     <a href="#" class="reveal group col-span-6 md:col-span-3 aspect-[3/4] relative overflow-hidden rounded-sm block">
-      <div class="absolute inset-0 t-vacheron tile-zoom dot-grid"></div>
-      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
-      <div class="tile-bigtype">VC</div>
+      <picture>
+        <source srcset="images/proj-11.webp" type="image/webp">
+        <img src="images/proj-11.jpg" alt="Vacheron Constantin" class="tile-img tile-zoom" loading="lazy" />
+      </picture>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent"></div>
       <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">11 · Vacheron</div>
       <div class="absolute bottom-5 left-5 right-5 text-paper tile-meta">
         <div class="font-display text-2xl leading-none">Complication<br />Pop-up</div>
-        <div class="mt-2 text-xs text-paper/70">Maltese Cross · High Watchmaking</div>
+        <div class="mt-2 text-xs text-paper/75 leading-relaxed">컴플리케이션 메커니즘을 중심으로 한<br/>하이 워치메이킹 전시.</div>
       </div>
     </a>
 
-    <!-- 12 Lotte Duty Free (wide) -->
+    <!-- 12 롯데면세점 (wide) -->
     <a href="#" class="reveal group col-span-12 md:col-span-8 aspect-[16/9] relative overflow-hidden rounded-sm block">
-      <div class="absolute inset-0 t-cartier tile-zoom dot-grid" style="filter: hue-rotate(-15deg);"></div>
-      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
-      <div class="tile-bigtype">LDF</div>
+      <picture>
+        <source srcset="images/proj-12.webp" type="image/webp">
+        <img src="images/proj-12.jpg" alt="롯데면세점 LDF House 명동" class="tile-img tile-zoom" loading="lazy" />
+      </picture>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent"></div>
       <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">12 · 롯데면세점 · LDF House</div>
       <div class="absolute bottom-5 left-5 right-5 text-paper tile-meta">
         <div class="font-display text-3xl md:text-4xl leading-none">명동 아나모픽 · 열기구</div>
-        <div class="mt-2 text-sm text-paper/70">Anamorphic Media Art + Air Balloon Lift</div>
+        <div class="mt-2 text-sm text-paper/75 leading-relaxed">열기구를 향수병 메타포로 재해석한 아나모픽 영상.<br class="hidden md:block"/>실제 옥상 리프트와 결합한 어트랙션.</div>
       </div>
     </a>
 
-    <!-- 13 DDP Light Show -->
+    <!-- 13 DDP -->
     <a href="#" class="reveal group col-span-12 md:col-span-4 aspect-square relative overflow-hidden rounded-sm block">
-      <div class="absolute inset-0 t-ddp tile-zoom dot-grid"></div>
-      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
-      <div class="tile-bigtype">DDP</div>
+      <picture>
+        <source srcset="images/proj-13.webp" type="image/webp">
+        <img src="images/proj-13.jpg" alt="DDP 서울 라이트 쇼" class="tile-img tile-zoom" loading="lazy" />
+      </picture>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent"></div>
       <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">13 · DDP</div>
       <div class="absolute bottom-5 left-5 right-5 text-paper tile-meta">
         <div class="font-display text-2xl md:text-3xl leading-none">서울 라이트 쇼</div>
-        <div class="mt-2 text-sm text-paper/70">김환기 × 버스데이</div>
+        <div class="mt-2 text-sm text-paper/75 leading-relaxed">김환기 × 버스데이 작품의 미디어아트<br class="hidden md:block"/>재현 티저.</div>
       </div>
     </a>
 
     <!-- 14 Veuve Clicquot -->
     <a href="#" class="reveal group col-span-6 md:col-span-3 aspect-square relative overflow-hidden rounded-sm block">
-      <div class="absolute inset-0 t-veuve tile-zoom dot-grid"></div>
-      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
-      <div class="tile-bigtype">VC</div>
+      <picture>
+        <source srcset="images/proj-14.webp" type="image/webp">
+        <img src="images/proj-14.jpg" alt="Veuve Clicquot" class="tile-img tile-zoom" loading="lazy" />
+      </picture>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent"></div>
       <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">14 · Veuve Clicquot</div>
       <div class="absolute bottom-5 left-5 right-5 text-paper tile-meta">
         <div class="font-display text-xl md:text-2xl leading-none">Chalk Cellars</div>
-        <div class="mt-1 text-xs text-paper/70">Yellow Label</div>
+        <div class="mt-1 text-xs text-paper/75 leading-relaxed">백악질 셀러 모티프 · 옐로 라벨<br/>반복 배치로 헤리티지 각인.</div>
       </div>
     </a>
 
     <!-- 15 Canada Goose -->
     <a href="#" class="reveal group col-span-6 md:col-span-3 aspect-square relative overflow-hidden rounded-sm block">
-      <div class="absolute inset-0 t-canada tile-zoom dot-grid"></div>
-      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
-      <div class="tile-bigtype">CG</div>
+      <picture>
+        <source srcset="images/proj-15.webp" type="image/webp">
+        <img src="images/proj-15.jpg" alt="Canada Goose 삼청각" class="tile-img tile-zoom" loading="lazy" />
+      </picture>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent"></div>
       <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">15 · Canada Goose</div>
       <div class="absolute bottom-5 left-5 right-5 text-paper tile-meta">
         <div class="font-display text-xl md:text-2xl leading-none">삼청각 Event</div>
-        <div class="mt-1 text-xs text-paper/70">FW · SS Collection</div>
+        <div class="mt-1 text-xs text-paper/75 leading-relaxed">전통 공간에 FW·SS 컬렉션을<br/>잇는 3개 존 구성.</div>
       </div>
     </a>
 
     <!-- 16 Nespresso -->
     <a href="#" class="reveal group col-span-6 md:col-span-3 aspect-square relative overflow-hidden rounded-sm block">
-      <div class="absolute inset-0 t-nespresso tile-zoom dot-grid"></div>
-      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
-      <div class="tile-bigtype">N</div>
+      <picture>
+        <source srcset="images/proj-16.webp" type="image/webp">
+        <img src="images/proj-16.jpg" alt="Nespresso 서울재즈페스티벌" class="tile-img tile-zoom" loading="lazy" />
+      </picture>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent"></div>
       <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">16 · Nespresso</div>
       <div class="absolute bottom-5 left-5 right-5 text-paper tile-meta">
         <div class="font-display text-xl md:text-2xl leading-none">Seoul Jazz '25</div>
-        <div class="mt-1 text-xs text-paper/70">Pistachio Green</div>
+        <div class="mt-1 text-xs text-paper/75 leading-relaxed">피스타치오 그린 키컬러의<br/>1990s 뉴트로 팝업스토어.</div>
       </div>
     </a>
 
     <!-- 17 Genesis -->
     <a href="#" class="reveal group col-span-6 md:col-span-3 aspect-square relative overflow-hidden rounded-sm block">
-      <div class="absolute inset-0 t-genesis tile-zoom dot-grid"></div>
-      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
-      <div class="tile-bigtype">G</div>
+      <picture>
+        <source srcset="images/proj-17.webp" type="image/webp">
+        <img src="images/proj-17.jpg" alt="Genesis Christmas Village" class="tile-img tile-zoom" loading="lazy" />
+      </picture>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent"></div>
       <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">17 · Genesis</div>
       <div class="absolute bottom-5 left-5 right-5 text-paper tile-meta">
         <div class="font-display text-xl md:text-2xl leading-none">Christmas Village</div>
-        <div class="mt-1 text-xs text-paper/70">Projection · Lighting Show</div>
+        <div class="mt-1 text-xs text-paper/75 leading-relaxed">프로젝션 맵핑과 라이팅 아트<br/>퍼포먼스의 야외 공간.</div>
       </div>
     </a>
 
-    <!-- 18 Woori Mom-Con -->
+    <!-- 18 우리금융 모모콘 -->
     <a href="#" class="reveal group col-span-12 md:col-span-4 aspect-square relative overflow-hidden rounded-sm block">
-      <div class="absolute inset-0 t-woori tile-zoom dot-grid"></div>
-      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
-      <div class="tile-bigtype">RFID</div>
+      <picture>
+        <source srcset="images/proj-18.webp" type="image/webp">
+        <img src="images/proj-18.jpg" alt="우리금융 모모콘" class="tile-img tile-zoom" loading="lazy" />
+      </picture>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent"></div>
       <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">18 · 우리금융</div>
       <div class="absolute bottom-5 left-5 right-5 text-paper tile-meta">
         <div class="font-display text-2xl md:text-3xl leading-none">모모콘 LED 팔찌</div>
-        <div class="mt-2 text-sm text-paper/70">RFID Interactive System</div>
+        <div class="mt-2 text-sm text-paper/75 leading-relaxed">RFID LED 팔찌로 체험 기록·리워드 자동화.<br class="hidden md:block"/>공연 시 음악 실시간 연동.</div>
       </div>
     </a>
 
     <!-- 19 LG AWE -->
     <a href="#" class="reveal group col-span-6 md:col-span-4 aspect-square relative overflow-hidden rounded-sm block">
-      <div class="absolute inset-0 t-awe tile-zoom dot-grid"></div>
-      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
-      <div class="tile-bigtype">AWE</div>
+      <picture>
+        <source srcset="images/proj-19.webp" type="image/webp">
+        <img src="images/proj-19.jpg" alt="LG AWE AI Gallery" class="tile-img tile-zoom" loading="lazy" />
+      </picture>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent"></div>
       <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">19 · LG AWE 2026</div>
       <div class="absolute bottom-5 left-5 right-5 text-paper tile-meta">
         <div class="font-display text-2xl md:text-3xl leading-none">AI Gallery · Appliance</div>
-        <div class="mt-2 text-sm text-paper/70">Wall Mapping · W6 Wallpaper TV</div>
+        <div class="mt-2 text-sm text-paper/75 leading-relaxed">월면 미디어 맵핑으로 제품을<br class="hidden md:block"/>미디어 오브젝트로 재정의.</div>
       </div>
     </a>
 
-    <!-- 20 Starfield Library -->
+    <!-- 20 Starfield -->
     <a href="#" class="reveal group col-span-6 md:col-span-4 aspect-square relative overflow-hidden rounded-sm block">
-      <div class="absolute inset-0 t-starfield tile-zoom dot-grid"></div>
-      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
-      <div class="tile-bigtype">STAR</div>
+      <picture>
+        <source srcset="images/proj-20.webp" type="image/webp">
+        <img src="images/proj-20.jpg" alt="Starfield Library" class="tile-img tile-zoom" loading="lazy" />
+      </picture>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent"></div>
       <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">20 · Starfield</div>
       <div class="absolute bottom-5 left-5 right-5 text-paper tile-meta">
         <div class="font-display text-2xl md:text-3xl leading-none">별마당 도서관</div>
-        <div class="mt-2 text-sm text-paper/70">Seasonal Renovation</div>
+        <div class="mt-2 text-sm text-paper/75 leading-relaxed">시즌별 연출과 콘텐츠 운영.<br class="hidden md:block"/>상설 공간의 변주 경험.</div>
       </div>
     </a>
   </div>
@@ -736,11 +771,11 @@
 <section id="contact" class="relative px-6 md:px-10 py-28 md:py-44 overflow-hidden">
   <div class="absolute inset-0 opacity-25">
     <picture>
-      <source srcset="images/dream-hero.webp" type="image/webp">
-      <img src="images/dream-hero.jpg" alt="" class="w-full h-full object-cover" style="object-position: center 50%; filter: blur(40px) saturate(1.3);" loading="lazy"/>
+      <source srcset="images/hero-alt.webp" type="image/webp">
+      <img src="images/hero-alt.jpg" alt="" class="w-full h-full object-cover" style="object-position: center 50%; filter: blur(24px) saturate(1.2);" loading="lazy"/>
     </picture>
   </div>
-  <div class="absolute inset-0 bg-ink/80"></div>
+  <div class="absolute inset-0 bg-ink/85"></div>
 
   <div class="relative">
     <div class="grid grid-cols-12 gap-6 md:gap-10 mb-10">
