@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>THE CANVAS — SEIZE THE BRUSH</title>
+<meta name="description" content="The Canvas — 몰입형 미디어아트, 공간 경험, 브랜딩을 기획부터 실행까지. Seize the brush." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@900&family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          display: ['Anton', 'Archivo', 'Pretendard Variable', 'sans-serif'],
+          sans: ['Pretendard Variable', 'Space Grotesk', 'system-ui', 'sans-serif'],
+          mono: ['Space Grotesk', 'monospace'],
+        },
+        colors: {
+          ink: '#0a0a0a',
+          paper: '#f4f1ea',
+          canvas: '#e9e4d8',
+          electric: '#6A5BFF',
+          signal: '#C8FF3A',
+        },
+      },
+    },
+  }
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  body {
+    background: #0a0a0a;
+    color: #f4f1ea;
+    font-family: 'Pretendard Variable', 'Space Grotesk', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  .font-display { font-family: 'Anton', 'Archivo', 'Pretendard Variable', sans-serif; letter-spacing: -0.02em; }
+  .display-huge { font-size: clamp(3.5rem, 13vw, 13rem); line-height: 0.88; letter-spacing: -0.04em; }
+  .display-xl { font-size: clamp(2.5rem, 8vw, 7rem); line-height: 0.9; letter-spacing: -0.03em; }
+  .display-l { font-size: clamp(2rem, 5vw, 4rem); line-height: 0.95; letter-spacing: -0.02em; }
+
+  /* Scroll reveal */
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity 1s cubic-bezier(.2,.7,.2,1), transform 1s cubic-bezier(.2,.7,.2,1); }
+  .reveal.is-visible { opacity: 1; transform: translateY(0); }
+  .reveal-up { opacity: 0; transform: translateY(80px); transition: opacity 1.1s cubic-bezier(.2,.7,.2,1), transform 1.1s cubic-bezier(.2,.7,.2,1); }
+  .reveal-up.is-visible { opacity: 1; transform: translateY(0); }
+  .reveal-word { display: inline-block; opacity: 0; transform: translateY(110%); transition: opacity .9s cubic-bezier(.2,.7,.2,1), transform .9s cubic-bezier(.2,.7,.2,1); }
+  .reveal-word.is-visible { opacity: 1; transform: translateY(0); }
+  .reveal-clip { overflow: hidden; display: inline-block; vertical-align: top; }
+
+  /* Marquee */
+  @keyframes marquee {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .marquee-track { display: inline-flex; animation: marquee 40s linear infinite; white-space: nowrap; }
+  .marquee-track:hover { animation-play-state: paused; }
+  @keyframes marquee-slow {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .marquee-slow { animation: marquee-slow 80s linear infinite; }
+
+  /* Noise overlay */
+  .noise::before {
+    content: "";
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.9  0 0 0 0 0.9  0 0 0 0 0.9  0 0 0 0.05 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    opacity: .35; pointer-events: none; z-index: 60; mix-blend-mode: overlay;
+  }
+
+  /* Placeholder tile */
+  .tile-ph {
+    background:
+      radial-gradient(80% 60% at 30% 20%, rgba(106,91,255,.18), transparent 60%),
+      radial-gradient(60% 50% at 80% 85%, rgba(200,255,58,.08), transparent 60%),
+      linear-gradient(135deg, #131212, #1b1a1a);
+  }
+
+  .card-hover { transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+  .card-hover:hover { transform: translateY(-6px); }
+  .img-zoom { transition: transform 1.2s cubic-bezier(.2,.7,.2,1); }
+  .group:hover .img-zoom { transform: scale(1.06); }
+
+  /* Horizontal scroll services */
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  /* Cursor blink */
+  @keyframes blink { 0%,49% {opacity:1;} 50%,100% {opacity:0;} }
+  .blink { animation: blink 1.1s steps(1) infinite; }
+
+  /* Mark / highlight */
+  .hl { background-image: linear-gradient(transparent 65%, rgba(200,255,58,.55) 65%); padding: 0 .1em; }
+
+  /* Section divider */
+  .rule { height: 1px; background: linear-gradient(90deg, transparent, rgba(244,241,234,.25), transparent); }
+
+  /* Custom underline link */
+  .u-link { position: relative; }
+  .u-link::after { content: ""; position: absolute; left: 0; bottom: -3px; width: 100%; height: 1px; background: currentColor; transform-origin: right; transform: scaleX(0); transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+  .u-link:hover::after { transform-origin: left; transform: scaleX(1); }
+
+  /* Hero gradient fade */
+  .hero-fade { background: linear-gradient(180deg, rgba(10,10,10,0) 40%, rgba(10,10,10,.55) 80%, #0a0a0a 100%); }
+
+  /* Tag pill */
+  .pill { border: 1px solid rgba(244,241,234,.2); border-radius: 999px; padding: 6px 14px; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; }
+</style>
+</head>
+<body class="noise">
+
+<!-- ============ NAV ============ -->
+<header class="fixed top-0 left-0 right-0 z-50 mix-blend-difference">
+  <nav class="px-6 md:px-10 py-5 flex items-center justify-between">
+    <a href="#top" class="font-display text-2xl md:text-3xl tracking-tight text-paper">THE CANVAS</a>
+    <ul class="hidden md:flex items-center gap-8 text-xs uppercase tracking-[.18em] text-paper">
+      <li><a href="#about" class="u-link">About</a></li>
+      <li><a href="#services" class="u-link">Services</a></li>
+      <li><a href="#work" class="u-link">Work</a></li>
+      <li><a href="#clients" class="u-link">Clients</a></li>
+      <li><a href="#contact" class="u-link">Contact</a></li>
+    </ul>
+    <a href="#contact" class="hidden md:inline-flex items-center gap-2 text-xs uppercase tracking-[.18em] text-paper">
+      <span class="w-2 h-2 rounded-full bg-signal"></span> Start a project
+    </a>
+  </nav>
+</header>
+
+<!-- ============ HERO ============ -->
+<section id="top" class="relative min-h-[100svh] flex flex-col justify-end overflow-hidden">
+  <!-- Background image -->
+  <div class="absolute inset-0">
+    <img src="images/dream-hero-2x.jpg" alt="Dream Memory by The Canvas" class="w-full h-full object-cover opacity-60" style="object-position: center 30%;" />
+    <div class="absolute inset-0 hero-fade"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-ink/60 via-transparent to-ink/30"></div>
+  </div>
+
+  <!-- Meta top -->
+  <div class="absolute top-24 md:top-28 left-6 md:left-10 right-6 md:right-10 flex items-start justify-between gap-6 z-10 text-paper">
+    <div class="text-[11px] tracking-[.2em] uppercase opacity-80">
+      <div>Seoul · KR</div>
+      <div class="opacity-60">Est. — Media / Space / Brand</div>
+    </div>
+    <div class="text-[11px] tracking-[.2em] uppercase opacity-80 text-right">
+      <div>2026 · Company Brief</div>
+      <div class="opacity-60">Vol. 001</div>
+    </div>
+  </div>
+
+  <!-- Headline -->
+  <div class="relative z-10 px-6 md:px-10 pb-16 md:pb-20">
+    <div class="font-display display-huge text-paper">
+      <span class="reveal-clip"><span class="reveal-word">SEIZE</span></span>
+      <span class="reveal-clip"><span class="reveal-word" style="transition-delay:.1s">THE</span></span>
+      <br />
+      <span class="reveal-clip"><span class="reveal-word" style="transition-delay:.2s">BRUSH.</span></span>
+    </div>
+    <div class="mt-8 md:mt-10 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+      <p class="reveal-up max-w-xl text-base md:text-lg leading-relaxed text-paper/80">
+        공간은 캔버스가 되고, 빛은 붓이 된다. <br class="hidden md:block" />
+        더 캔버스는 미디어아트·공간경험·브랜딩을 하나의 감각으로 엮어, 브랜드의 장면을 현실에 그립니다.
+      </p>
+      <a href="#work" class="reveal-up group inline-flex items-center gap-3 text-xs uppercase tracking-[.24em] text-paper self-start md:self-auto">
+        <span class="w-10 h-10 rounded-full border border-paper/50 flex items-center justify-center group-hover:bg-paper group-hover:text-ink transition-all">
+          ↓
+        </span>
+        Scroll to Work
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MARQUEE ============ -->
+<section class="py-6 border-y border-paper/10 bg-ink overflow-hidden">
+  <div class="marquee-track font-display text-paper/90 text-5xl md:text-7xl">
+    <div class="flex items-center gap-10 pr-10">
+      <span>SEIZE THE BRUSH</span><span class="text-signal">✦</span>
+      <span>MEDIA · SPACE · BRAND</span><span class="text-signal">✦</span>
+      <span>THE CANVAS</span><span class="text-signal">✦</span>
+      <span>EST. SEOUL</span><span class="text-signal">✦</span>
+      <span>SEIZE THE BRUSH</span><span class="text-signal">✦</span>
+      <span>MEDIA · SPACE · BRAND</span><span class="text-signal">✦</span>
+      <span>THE CANVAS</span><span class="text-signal">✦</span>
+      <span>EST. SEOUL</span><span class="text-signal">✦</span>
+    </div>
+    <div class="flex items-center gap-10 pr-10" aria-hidden="true">
+      <span>SEIZE THE BRUSH</span><span class="text-signal">✦</span>
+      <span>MEDIA · SPACE · BRAND</span><span class="text-signal">✦</span>
+      <span>THE CANVAS</span><span class="text-signal">✦</span>
+      <span>EST. SEOUL</span><span class="text-signal">✦</span>
+      <span>SEIZE THE BRUSH</span><span class="text-signal">✦</span>
+      <span>MEDIA · SPACE · BRAND</span><span class="text-signal">✦</span>
+      <span>THE CANVAS</span><span class="text-signal">✦</span>
+      <span>EST. SEOUL</span><span class="text-signal">✦</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section id="about" class="relative px-6 md:px-10 py-28 md:py-40">
+  <div class="grid grid-cols-12 gap-6 md:gap-10">
+    <div class="col-span-12 md:col-span-3">
+      <div class="pill reveal">About / 001</div>
+    </div>
+    <div class="col-span-12 md:col-span-9">
+      <h2 class="font-display display-xl text-paper reveal-up">
+        기획 · 제작 · 운영을<br />
+        하나의 <span class="text-signal">붓</span>으로.
+      </h2>
+      <div class="mt-10 grid md:grid-cols-2 gap-8 text-paper/80">
+        <p class="reveal leading-relaxed text-lg">
+          The Canvas는 LED 미디어아트, 전시·팝업 공간, 브랜드 경험을 통합 설계하는
+          크리에이티브 스튜디오입니다. 콘텐츠·디자인·개발 3개 팀이 한 프로젝트를
+          처음부터 끝까지 함께 움직이며, 기술을 감각 경험으로 번역합니다.
+        </p>
+        <p class="reveal leading-relaxed text-lg">
+          CES · MWC · INTERMAT과 같은 글로벌 무대부터 카르티에, 바쉐론 콘스탄틴,
+          뵈브 클리코와 같은 럭셔리 하우스의 공간까지—
+          <span class="hl text-ink">"공간을 캔버스로, 빛을 붓으로"</span>
+          삼는 관점으로 브랜드의 장면을 현실화합니다.
+        </p>
+      </div>
+
+      <!-- Stat row -->
+      <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10 border-t border-paper/15 pt-10">
+        <div class="reveal">
+          <div class="font-display text-5xl md:text-6xl text-paper">End<span class="text-signal">—</span>End</div>
+          <div class="mt-2 text-xs uppercase tracking-[.18em] text-paper/60">Integrated Execution</div>
+        </div>
+        <div class="reveal">
+          <div class="font-display text-5xl md:text-6xl text-paper">LED·AR·3D</div>
+          <div class="mt-2 text-xs uppercase tracking-[.18em] text-paper/60">Multi-Medium</div>
+        </div>
+        <div class="reveal">
+          <div class="font-display text-5xl md:text-6xl text-paper">Global</div>
+          <div class="mt-2 text-xs uppercase tracking-[.18em] text-paper/60">CES · MWC · Bauma</div>
+        </div>
+        <div class="reveal">
+          <div class="font-display text-5xl md:text-6xl text-paper">Luxury</div>
+          <div class="mt-2 text-xs uppercase tracking-[.18em] text-paper/60">Cartier · Vacheron</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="rule mx-6 md:mx-10"></div>
+
+<!-- ============ SERVICES ============ -->
+<section id="services" class="relative px-6 md:px-10 py-28 md:py-40">
+  <div class="grid grid-cols-12 gap-6 md:gap-10 mb-16 md:mb-24">
+    <div class="col-span-12 md:col-span-3">
+      <div class="pill reveal">Services / 002</div>
+    </div>
+    <div class="col-span-12 md:col-span-9">
+      <h2 class="font-display display-xl text-paper reveal-up">
+        What we do.<br />
+        <span class="text-paper/40">4 ways, 1 canvas.</span>
+      </h2>
+    </div>
+  </div>
+
+  <!-- Horizontal scroll cards -->
+  <div class="no-scrollbar overflow-x-auto -mx-6 md:-mx-10 px-6 md:px-10 snap-x snap-mandatory">
+    <div class="flex gap-5 md:gap-8 pb-4">
+      <!-- Card 1 -->
+      <article class="reveal snap-start shrink-0 w-[84vw] md:w-[32vw] min-h-[64vh] relative overflow-hidden rounded-sm card-hover group">
+        <div class="absolute inset-0 tile-ph img-zoom"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent"></div>
+        <div class="absolute top-6 left-6 right-6 flex justify-between items-start text-paper">
+          <div class="font-mono text-xs tracking-widest">01 / 04</div>
+          <div class="font-mono text-xs tracking-widest opacity-60">↗</div>
+        </div>
+        <div class="absolute bottom-6 left-6 right-6 text-paper">
+          <div class="text-xs uppercase tracking-[.2em] text-signal mb-3">Creative &amp; Strategy</div>
+          <h3 class="font-display text-4xl md:text-5xl leading-none">브랜드의<br />시나리오.</h3>
+          <p class="mt-4 text-sm text-paper/70 leading-relaxed">전략·기획·아트 디렉션으로 브랜드 장면의 서사를 설계합니다.</p>
+        </div>
+      </article>
+
+      <!-- Card 2 -->
+      <article class="reveal snap-start shrink-0 w-[84vw] md:w-[32vw] min-h-[64vh] relative overflow-hidden rounded-sm card-hover group" style="transition-delay:.1s">
+        <img src="images/dream-hero.jpg" alt="" class="absolute inset-0 w-full h-full object-cover img-zoom" style="object-position: 20% center;" />
+        <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent"></div>
+        <div class="absolute top-6 left-6 right-6 flex justify-between items-start text-paper">
+          <div class="font-mono text-xs tracking-widest">02 / 04</div>
+          <div class="font-mono text-xs tracking-widest opacity-60">↗</div>
+        </div>
+        <div class="absolute bottom-6 left-6 right-6 text-paper">
+          <div class="text-xs uppercase tracking-[.2em] text-signal mb-3">Contents Marketing</div>
+          <h3 class="font-display text-4xl md:text-5xl leading-none">빛으로<br />쓰는 문장.</h3>
+          <p class="mt-4 text-sm text-paper/70 leading-relaxed">LED · 3D 모션 · 아나모픽 · AI 영상까지, 모든 화면을 하나의 서사로.</p>
+        </div>
+      </article>
+
+      <!-- Card 3 -->
+      <article class="reveal snap-start shrink-0 w-[84vw] md:w-[32vw] min-h-[64vh] relative overflow-hidden rounded-sm card-hover group" style="transition-delay:.2s">
+        <img src="images/dream-2.jpg" alt="" class="absolute inset-0 w-full h-full object-cover img-zoom" />
+        <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent"></div>
+        <div class="absolute top-6 left-6 right-6 flex justify-between items-start text-paper">
+          <div class="font-mono text-xs tracking-widest">03 / 04</div>
+          <div class="font-mono text-xs tracking-widest opacity-60">↗</div>
+        </div>
+        <div class="absolute bottom-6 left-6 right-6 text-paper">
+          <div class="text-xs uppercase tracking-[.2em] text-signal mb-3">Space Experience</div>
+          <h3 class="font-display text-4xl md:text-5xl leading-none">걷는<br />전시.</h3>
+          <p class="mt-4 text-sm text-paper/70 leading-relaxed">전시·팝업 공간을 동선과 감각으로 설계해 체험으로 완성합니다.</p>
+        </div>
+      </article>
+
+      <!-- Card 4 -->
+      <article class="reveal snap-start shrink-0 w-[84vw] md:w-[32vw] min-h-[64vh] relative overflow-hidden rounded-sm card-hover group" style="transition-delay:.3s">
+        <img src="images/dream-3.jpg" alt="" class="absolute inset-0 w-full h-full object-cover img-zoom" />
+        <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent"></div>
+        <div class="absolute top-6 left-6 right-6 flex justify-between items-start text-paper">
+          <div class="font-mono text-xs tracking-widest">04 / 04</div>
+          <div class="font-mono text-xs tracking-widest opacity-60">↗</div>
+        </div>
+        <div class="absolute bottom-6 left-6 right-6 text-paper">
+          <div class="text-xs uppercase tracking-[.2em] text-signal mb-3">Branding</div>
+          <h3 class="font-display text-4xl md:text-5xl leading-none">공간에<br />아이덴티티를.</h3>
+          <p class="mt-4 text-sm text-paper/70 leading-relaxed">럭셔리 팝업부터 리테일 리노베이션까지, 공간이 곧 브랜드가 되도록.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <p class="mt-6 text-xs tracking-[.2em] uppercase text-paper/50">→ Scroll / Drag</p>
+</section>
+
+<div class="rule mx-6 md:mx-10"></div>
+
+<!-- ============ FEATURED WORK ============ -->
+<section id="work" class="relative px-6 md:px-10 py-28 md:py-40">
+  <div class="grid grid-cols-12 gap-6 md:gap-10 mb-16 md:mb-24">
+    <div class="col-span-12 md:col-span-3">
+      <div class="pill reveal">Work / 003</div>
+    </div>
+    <div class="col-span-12 md:col-span-9">
+      <h2 class="font-display display-xl text-paper reveal-up">
+        20 stages,<br />
+        one canvas.
+      </h2>
+      <p class="mt-6 text-paper/70 max-w-xl reveal leading-relaxed">
+        CES · MWC · 럭셔리 하우스 팝업까지. 2023–2026 선별작 20.
+      </p>
+    </div>
+  </div>
+
+  <!-- Portfolio grid -->
+  <div class="grid grid-cols-12 gap-3 md:gap-5">
+    <!-- 01 -->
+    <a href="#" class="reveal group col-span-12 md:col-span-8 aspect-[16/10] relative overflow-hidden rounded-sm block">
+      <div class="absolute inset-0 tile-ph img-zoom"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
+      <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">01 · 2026 · LG CES</div>
+      <div class="absolute bottom-5 left-5 right-5 text-paper">
+        <div class="font-display text-3xl md:text-5xl leading-none">MS ZONE — WebOS Goldberg</div>
+        <div class="mt-2 text-sm text-paper/70">Interactive Goldberg + Real-time Media</div>
+      </div>
+    </a>
+    <!-- 02 -->
+    <a href="#" class="reveal group col-span-12 md:col-span-4 aspect-[4/5] relative overflow-hidden rounded-sm block">
+      <img src="images/dream-hero.jpg" alt="" class="absolute inset-0 w-full h-full object-cover img-zoom" />
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
+      <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">02 · 2023 · Coex Living Fair</div>
+      <div class="absolute bottom-5 left-5 right-5 text-paper">
+        <div class="font-display text-3xl md:text-4xl leading-none">꿈의 기억</div>
+        <div class="mt-2 text-sm text-paper/70">LED · Lighting · Media Facade</div>
+      </div>
+    </a>
+
+    <!-- 03 -->
+    <a href="#" class="reveal group col-span-6 md:col-span-4 aspect-square relative overflow-hidden rounded-sm block">
+      <div class="absolute inset-0 tile-ph img-zoom"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
+      <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">03 · 2026 · LG CES</div>
+      <div class="absolute bottom-5 left-5 right-5 text-paper">
+        <div class="font-display text-2xl md:text-3xl leading-none">MS ZONE — AI GALLERY</div>
+      </div>
+    </a>
+    <!-- 04 -->
+    <a href="#" class="reveal group col-span-6 md:col-span-4 aspect-square relative overflow-hidden rounded-sm block">
+      <img src="images/dream-2.jpg" alt="" class="absolute inset-0 w-full h-full object-cover img-zoom" />
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
+      <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">04 · 2026 · LG U+ MWC</div>
+      <div class="absolute bottom-5 left-5 right-5 text-paper">
+        <div class="font-display text-2xl md:text-3xl leading-none">Robot Presentation</div>
+      </div>
+    </a>
+    <!-- 05 -->
+    <a href="#" class="reveal group col-span-12 md:col-span-4 aspect-square relative overflow-hidden rounded-sm block">
+      <div class="absolute inset-0 tile-ph img-zoom"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
+      <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">05 · 2026 · LG CES</div>
+      <div class="absolute bottom-5 left-5 right-5 text-paper">
+        <div class="font-display text-2xl md:text-3xl leading-none">World Premiere</div>
+      </div>
+    </a>
+
+    <!-- 06 (wide) -->
+    <a href="#" class="reveal group col-span-12 md:col-span-6 aspect-[16/9] relative overflow-hidden rounded-sm block">
+      <div class="absolute inset-0 tile-ph img-zoom"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
+      <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">06 · 2025 · IBK</div>
+      <div class="absolute bottom-5 left-5 right-5 text-paper">
+        <div class="font-display text-3xl md:text-4xl leading-none">IBK 본점 홍보관</div>
+        <div class="mt-2 text-sm text-paper/70">Infinity Mirror · Anamorphic</div>
+      </div>
+    </a>
+    <!-- 07 -->
+    <a href="#" class="reveal group col-span-12 md:col-span-6 aspect-[16/9] relative overflow-hidden rounded-sm block">
+      <img src="images/dream-3.jpg" alt="" class="absolute inset-0 w-full h-full object-cover img-zoom" />
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
+      <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">07 · 2025 · 신세계</div>
+      <div class="absolute bottom-5 left-5 right-5 text-paper">
+        <div class="font-display text-3xl md:text-4xl leading-none">MARS 2025 · 360°</div>
+        <div class="mt-2 text-sm text-paper/70">신세계 프라퍼티 · 스타베이 시티</div>
+      </div>
+    </a>
+
+    <!-- 08 -->
+    <a href="#" class="reveal group col-span-6 md:col-span-3 aspect-[3/4] relative overflow-hidden rounded-sm block">
+      <div class="absolute inset-0 tile-ph img-zoom"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
+      <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">08 · SK CES</div>
+      <div class="absolute bottom-5 left-5 right-5 text-paper">
+        <div class="font-display text-2xl leading-none">Sphere 6m</div>
+      </div>
+    </a>
+    <!-- 09 -->
+    <a href="#" class="reveal group col-span-6 md:col-span-3 aspect-[3/4] relative overflow-hidden rounded-sm block">
+      <img src="images/dream-4.jpg" alt="" class="absolute inset-0 w-full h-full object-cover img-zoom" />
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
+      <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">09 · 삼성반도체</div>
+      <div class="absolute bottom-5 left-5 right-5 text-paper">
+        <div class="font-display text-2xl leading-none">평택 VIP 전시관</div>
+      </div>
+    </a>
+    <!-- 10 -->
+    <a href="#" class="reveal group col-span-6 md:col-span-3 aspect-[3/4] relative overflow-hidden rounded-sm block">
+      <div class="absolute inset-0 tile-ph img-zoom"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
+      <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">10 · Cartier</div>
+      <div class="absolute bottom-5 left-5 right-5 text-paper">
+        <div class="font-display text-2xl leading-none">Le Voyage Recommence</div>
+      </div>
+    </a>
+    <!-- 11 -->
+    <a href="#" class="reveal group col-span-6 md:col-span-3 aspect-[3/4] relative overflow-hidden rounded-sm block">
+      <img src="images/dream-5.jpg" alt="" class="absolute inset-0 w-full h-full object-cover img-zoom" />
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
+      <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">11 · Vacheron</div>
+      <div class="absolute bottom-5 left-5 right-5 text-paper">
+        <div class="font-display text-2xl leading-none">Complication Pop-up</div>
+      </div>
+    </a>
+
+    <!-- 12 wide -->
+    <a href="#" class="reveal group col-span-12 md:col-span-8 aspect-[16/9] relative overflow-hidden rounded-sm block">
+      <img src="images/dream-6.jpg" alt="" class="absolute inset-0 w-full h-full object-cover img-zoom" />
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
+      <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">12 · 롯데면세점 · LDF House</div>
+      <div class="absolute bottom-5 left-5 right-5 text-paper">
+        <div class="font-display text-3xl md:text-4xl leading-none">명동 아나모픽 · 열기구</div>
+        <div class="mt-2 text-sm text-paper/70">Anamorphic Media Art</div>
+      </div>
+    </a>
+    <!-- 13 -->
+    <a href="#" class="reveal group col-span-12 md:col-span-4 aspect-square relative overflow-hidden rounded-sm block">
+      <div class="absolute inset-0 tile-ph img-zoom"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
+      <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">13 · DDP</div>
+      <div class="absolute bottom-5 left-5 right-5 text-paper">
+        <div class="font-display text-2xl md:text-3xl leading-none">서울 라이트 쇼</div>
+        <div class="mt-2 text-sm text-paper/70">김환기 × 버스데이</div>
+      </div>
+    </a>
+
+    <!-- 14 -->
+    <a href="#" class="reveal group col-span-6 md:col-span-3 aspect-square relative overflow-hidden rounded-sm block">
+      <div class="absolute inset-0 tile-ph img-zoom"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
+      <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">14 · Veuve Clicquot</div>
+      <div class="absolute bottom-5 left-5 right-5 text-paper">
+        <div class="font-display text-xl md:text-2xl leading-none">Chalk Cellars</div>
+      </div>
+    </a>
+    <!-- 15 -->
+    <a href="#" class="reveal group col-span-6 md:col-span-3 aspect-square relative overflow-hidden rounded-sm block">
+      <img src="images/dream-2.jpg" alt="" class="absolute inset-0 w-full h-full object-cover img-zoom" style="object-position: right center;"/>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
+      <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">15 · Canada Goose</div>
+      <div class="absolute bottom-5 left-5 right-5 text-paper">
+        <div class="font-display text-xl md:text-2xl leading-none">삼청각 Event</div>
+      </div>
+    </a>
+    <!-- 16 -->
+    <a href="#" class="reveal group col-span-6 md:col-span-3 aspect-square relative overflow-hidden rounded-sm block">
+      <div class="absolute inset-0 tile-ph img-zoom"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
+      <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">16 · Nespresso</div>
+      <div class="absolute bottom-5 left-5 right-5 text-paper">
+        <div class="font-display text-xl md:text-2xl leading-none">Seoul Jazz '25</div>
+      </div>
+    </a>
+    <!-- 17 -->
+    <a href="#" class="reveal group col-span-6 md:col-span-3 aspect-square relative overflow-hidden rounded-sm block">
+      <img src="images/dream-5.jpg" alt="" class="absolute inset-0 w-full h-full object-cover img-zoom" style="object-position: center 30%;"/>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
+      <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">17 · Genesis</div>
+      <div class="absolute bottom-5 left-5 right-5 text-paper">
+        <div class="font-display text-xl md:text-2xl leading-none">Christmas Village</div>
+      </div>
+    </a>
+
+    <!-- 18 wide -->
+    <a href="#" class="reveal group col-span-12 md:col-span-4 aspect-square relative overflow-hidden rounded-sm block">
+      <div class="absolute inset-0 tile-ph img-zoom"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
+      <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">18 · 우리금융</div>
+      <div class="absolute bottom-5 left-5 right-5 text-paper">
+        <div class="font-display text-2xl md:text-3xl leading-none">모모콘 LED 팔찌</div>
+        <div class="mt-2 text-sm text-paper/70">RFID Interactive System</div>
+      </div>
+    </a>
+    <!-- 19 -->
+    <a href="#" class="reveal group col-span-6 md:col-span-4 aspect-square relative overflow-hidden rounded-sm block">
+      <img src="images/dream-4.jpg" alt="" class="absolute inset-0 w-full h-full object-cover img-zoom" style="object-position: right center;"/>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
+      <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">19 · LG AWE 2026</div>
+      <div class="absolute bottom-5 left-5 right-5 text-paper">
+        <div class="font-display text-2xl md:text-3xl leading-none">AI Gallery · Appliance</div>
+      </div>
+    </a>
+    <!-- 20 -->
+    <a href="#" class="reveal group col-span-6 md:col-span-4 aspect-square relative overflow-hidden rounded-sm block">
+      <div class="absolute inset-0 tile-ph img-zoom"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"></div>
+      <div class="absolute top-5 left-5 text-paper font-mono text-xs tracking-widest">20 · Starfield</div>
+      <div class="absolute bottom-5 left-5 right-5 text-paper">
+        <div class="font-display text-2xl md:text-3xl leading-none">별마당 도서관</div>
+        <div class="mt-2 text-sm text-paper/70">Seasonal Renovation</div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<div class="rule mx-6 md:mx-10"></div>
+
+<!-- ============ CLIENTS ============ -->
+<section id="clients" class="relative px-6 md:px-10 py-28 md:py-40">
+  <div class="grid grid-cols-12 gap-6 md:gap-10 mb-14 md:mb-20">
+    <div class="col-span-12 md:col-span-3">
+      <div class="pill reveal">Clients / 004</div>
+    </div>
+    <div class="col-span-12 md:col-span-9">
+      <h2 class="font-display display-xl text-paper reveal-up">
+        They trusted<br />
+        the canvas.
+      </h2>
+    </div>
+  </div>
+
+  <!-- Marquee 1 -->
+  <div class="overflow-hidden border-y border-paper/10 py-8">
+    <div class="marquee-track font-display text-paper/80 text-3xl md:text-5xl uppercase">
+      <div class="flex items-center gap-8 pr-8">
+        <span>LG Electronics</span><span class="text-signal">·</span>
+        <span>LG U+</span><span class="text-signal">·</span>
+        <span>LG Chem</span><span class="text-signal">·</span>
+        <span>LG Energy Solution</span><span class="text-signal">·</span>
+        <span>Samsung</span><span class="text-signal">·</span>
+        <span>Samsung Semiconductor</span><span class="text-signal">·</span>
+        <span>SK Group</span><span class="text-signal">·</span>
+        <span>Hyundai Motor</span><span class="text-signal">·</span>
+        <span>HD Hyundai</span><span class="text-signal">·</span>
+        <span>Hanwha</span><span class="text-signal">·</span>
+        <span>POSCO</span><span class="text-signal">·</span>
+        <span>KT</span><span class="text-signal">·</span>
+        <span>CJ ENM</span><span class="text-signal">·</span>
+        <span>Kakao Bank</span><span class="text-signal">·</span>
+      </div>
+      <div class="flex items-center gap-8 pr-8" aria-hidden="true">
+        <span>LG Electronics</span><span class="text-signal">·</span>
+        <span>LG U+</span><span class="text-signal">·</span>
+        <span>LG Chem</span><span class="text-signal">·</span>
+        <span>LG Energy Solution</span><span class="text-signal">·</span>
+        <span>Samsung</span><span class="text-signal">·</span>
+        <span>Samsung Semiconductor</span><span class="text-signal">·</span>
+        <span>SK Group</span><span class="text-signal">·</span>
+        <span>Hyundai Motor</span><span class="text-signal">·</span>
+        <span>HD Hyundai</span><span class="text-signal">·</span>
+        <span>Hanwha</span><span class="text-signal">·</span>
+        <span>POSCO</span><span class="text-signal">·</span>
+        <span>KT</span><span class="text-signal">·</span>
+        <span>CJ ENM</span><span class="text-signal">·</span>
+        <span>Kakao Bank</span><span class="text-signal">·</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Marquee 2 reverse -->
+  <div class="overflow-hidden border-b border-paper/10 py-8">
+    <div class="marquee-track marquee-slow font-display text-paper/80 text-3xl md:text-5xl uppercase" style="animation-direction: reverse;">
+      <div class="flex items-center gap-8 pr-8">
+        <span>Cartier</span><span class="text-signal">·</span>
+        <span>Vacheron Constantin</span><span class="text-signal">·</span>
+        <span>Veuve Clicquot</span><span class="text-signal">·</span>
+        <span>Canada Goose</span><span class="text-signal">·</span>
+        <span>Nespresso</span><span class="text-signal">·</span>
+        <span>Heineken</span><span class="text-signal">·</span>
+        <span>Lotte Duty Free</span><span class="text-signal">·</span>
+        <span>Shinsegae Property</span><span class="text-signal">·</span>
+        <span>Starfield</span><span class="text-signal">·</span>
+        <span>Genesis</span><span class="text-signal">·</span>
+        <span>JEEP</span><span class="text-signal">·</span>
+        <span>Nissan</span><span class="text-signal">·</span>
+        <span>Simmons</span><span class="text-signal">·</span>
+        <span>IBK</span><span class="text-signal">·</span>
+        <span>Woori Financial</span><span class="text-signal">·</span>
+        <span>KOTRA</span><span class="text-signal">·</span>
+      </div>
+      <div class="flex items-center gap-8 pr-8" aria-hidden="true">
+        <span>Cartier</span><span class="text-signal">·</span>
+        <span>Vacheron Constantin</span><span class="text-signal">·</span>
+        <span>Veuve Clicquot</span><span class="text-signal">·</span>
+        <span>Canada Goose</span><span class="text-signal">·</span>
+        <span>Nespresso</span><span class="text-signal">·</span>
+        <span>Heineken</span><span class="text-signal">·</span>
+        <span>Lotte Duty Free</span><span class="text-signal">·</span>
+        <span>Shinsegae Property</span><span class="text-signal">·</span>
+        <span>Starfield</span><span class="text-signal">·</span>
+        <span>Genesis</span><span class="text-signal">·</span>
+        <span>JEEP</span><span class="text-signal">·</span>
+        <span>Nissan</span><span class="text-signal">·</span>
+        <span>Simmons</span><span class="text-signal">·</span>
+        <span>IBK</span><span class="text-signal">·</span>
+        <span>Woori Financial</span><span class="text-signal">·</span>
+        <span>KOTRA</span><span class="text-signal">·</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA / CONTACT ============ -->
+<section id="contact" class="relative px-6 md:px-10 py-28 md:py-44 overflow-hidden">
+  <!-- Faint backdrop -->
+  <div class="absolute inset-0 opacity-30">
+    <img src="images/dream-memory.jpg" alt="" class="w-full h-full object-cover" style="object-position: 65% 50%; filter: blur(40px);"/>
+  </div>
+  <div class="absolute inset-0 bg-ink/80"></div>
+
+  <div class="relative">
+    <div class="grid grid-cols-12 gap-6 md:gap-10 mb-10">
+      <div class="col-span-12 md:col-span-3">
+        <div class="pill reveal">Contact / 005</div>
+      </div>
+      <div class="col-span-12 md:col-span-9">
+        <h2 class="font-display text-paper reveal-up" style="font-size: clamp(3rem, 11vw, 11rem); line-height: .88; letter-spacing: -.04em;">
+          Got a<br />
+          <span class="text-signal italic font-display">canvas?</span><br />
+          Let's paint.
+        </h2>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-12 gap-6 md:gap-10 mt-16 md:mt-24 border-t border-paper/15 pt-10">
+      <div class="col-span-12 md:col-span-4 reveal">
+        <div class="text-xs uppercase tracking-[.2em] text-paper/50 mb-3">Email</div>
+        <a href="mailto:bl@the-canvas.co.kr" class="font-display text-2xl md:text-3xl text-paper u-link break-all">bl@the-canvas.co.kr</a>
+      </div>
+      <div class="col-span-12 md:col-span-4 reveal" style="transition-delay:.1s">
+        <div class="text-xs uppercase tracking-[.2em] text-paper/50 mb-3">Studio</div>
+        <div class="font-display text-2xl md:text-3xl text-paper">Seoul · KR</div>
+      </div>
+      <div class="col-span-12 md:col-span-4 reveal" style="transition-delay:.2s">
+        <div class="text-xs uppercase tracking-[.2em] text-paper/50 mb-3">Inquiry</div>
+        <a href="mailto:bl@the-canvas.co.kr?subject=New%20Project%20with%20The%20Canvas" class="inline-flex items-center gap-3 font-display text-2xl md:text-3xl text-paper u-link">
+          Start a project →
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="border-t border-paper/10">
+  <div class="px-6 md:px-10 py-10">
+    <div class="font-display text-[20vw] md:text-[14vw] leading-[0.85] text-paper/90 select-none tracking-tighter">THE CANVAS</div>
+  </div>
+  <div class="px-6 md:px-10 pb-8 flex flex-col md:flex-row gap-4 md:items-center md:justify-between text-xs uppercase tracking-[.2em] text-paper/50">
+    <div>© The Canvas · All Rights Reserved.</div>
+    <div>Seize the brush<span class="blink">_</span></div>
+    <div>Seoul / 2026</div>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting) {
+        e.target.classList.add('is-visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: "0px 0px -60px 0px" });
+
+  document.querySelectorAll('.reveal, .reveal-up, .reveal-word').forEach(el => observer.observe(el));
+
+  // Trigger hero words immediately after load
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.querySelectorAll('#top .reveal-word').forEach(el => el.classList.add('is-visible'));
+      document.querySelectorAll('#top .reveal-up').forEach(el => el.classList.add('is-visible'));
+    }, 100);
+  });
+</script>
+</body>
+</html>
